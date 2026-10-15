@@ -57,3 +57,12 @@ next-env.d.ts
 BRIEF.md
 *.brief.md
 CLAUDE.local.md
+
+# v1 import: raw dumps, originals, screenshots and private copy stay local
+/scripts/import/raw/
+/scripts/import/images/
+/scripts/import/screenshots/
+/scripts/import/theme.json
+/scripts/import/copy.json
+/scripts/import/report.html
+/scripts/import/lighthouse/

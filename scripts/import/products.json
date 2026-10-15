@@ -1,0 +1,1012 @@
+{
+  "source": "https://terrace-archive-kit.base44.app",
+  "crawledAt": "2026-10-15T12:15:52.258Z",
+  "products": [
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7b9",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7b9",
+      "slug": "real-madrid-green-mbappe-10-jersey",
+      "name": "Real Madrid Green Mbappé #10 Jersey",
+      "club": "Real Madrid",
+      "clubLabel": "Real Madrid",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-RMA-GRN-MBP10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 1,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Bold green Real Madrid jersey featuring Mbappé's name and number 10 on the back, with the club crest and modern sponsor detailing. A standout piece for any Madridista.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Real Madrid"
+      },
+      "cardLabels": [
+        "REAL MADRID"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/ec9392dde_real_madrid_green_mbappe_10.jpg",
+          "alt": "Real Madrid Green Mbappé #10 Jersey – Real Madrid football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/ec9392dde_real_madrid_green_mbappe_10.jpg",
+          "file": "real-madrid-green-mbappe-10-jersey-1-56afcaba.jpg",
+          "bytes": 53920,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 393,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7ba",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7ba",
+      "slug": "barcelona-messi-qatar-airways-10-jersey",
+      "name": "Barcelona Messi Qatar Airways #10 Jersey",
+      "club": "FC Barcelona",
+      "clubLabel": "FC Barcelona",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-FCB-MES-QA10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 2,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Classic Barcelona jersey featuring the iconic Qatar Airways sponsor, club crest, and Messi's name and number 10 on the back. A timeless piece celebrating the club's greatest era.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "FC Barcelona"
+      },
+      "cardLabels": [
+        "FC BARCELONA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/78205b910_barcelona_messi_qatar_airways_10.jpg",
+          "alt": "Barcelona Messi Qatar Airways #10 Jersey – FC Barcelona football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/78205b910_barcelona_messi_qatar_airways_10.jpg",
+          "file": "barcelona-messi-qatar-airways-10-jersey-1-6a2b347a.jpg",
+          "bytes": 42001,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 360,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7bb",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7bb",
+      "slug": "ac-milan-white-kaka-22-jersey",
+      "name": "AC Milan White Kaká #22 Jersey",
+      "club": "AC Milan",
+      "clubLabel": "AC Milan",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-ACM-WHT-KAK22",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 3,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Elegant white AC Milan jersey featuring Kaká's name and number 22 on the back, with the iconic Rossoneri crest. A tribute to the Brazilian maestro's San Siro legacy.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "AC Milan"
+      },
+      "cardLabels": [
+        "AC MILAN"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/7f3c1c56f_ac_milan_white_kaka_22.jpg",
+          "alt": "AC Milan White Kaká #22 Jersey – AC Milan football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/7f3c1c56f_ac_milan_white_kaka_22.jpg",
+          "file": "ac-milan-white-kaka-22-jersey-1-90376415.jpg",
+          "bytes": 46896,
+          "contentType": "image/jpeg",
+          "width": 593,
+          "height": 380,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7bc",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7bc",
+      "slug": "argentina-sky-blue-and-white-striped-jersey",
+      "name": "Argentina Sky Blue & White Striped Jersey",
+      "club": "Argentina",
+      "clubLabel": "Argentina · Argentina",
+      "country": "Argentina",
+      "countrySource": "product page detail",
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-ARG-STR-JER",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 4,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Iconic Argentina sky blue and white striped jersey, the colours of the Albiceleste. A classic national team kit worn with pride by world champions.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Argentina",
+        "COUNTRY": "Argentina"
+      },
+      "cardLabels": [
+        "ARGENTINA · ARGENTINA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/c8de7e60d_argentina_striped_jersey.jpg",
+          "alt": "Argentina Sky Blue & White Striped Jersey – Argentina football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/c8de7e60d_argentina_striped_jersey.jpg",
+          "file": "argentina-sky-blue-and-white-striped-jersey-1-94b7e164.jpg",
+          "bytes": 58410,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 386,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7bd",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7bd",
+      "slug": "arsenal-red-and-white-saka-7-jersey",
+      "name": "Arsenal Red & White Saka #7 Jersey",
+      "club": "Arsenal",
+      "clubLabel": "Arsenal",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-ARS-RED-SAK7",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 5,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Classic Arsenal red and white jersey featuring Saka's name and number 7 on the back, with the Gunners crest. A modern classic from the Emirates.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Arsenal"
+      },
+      "cardLabels": [
+        "ARSENAL"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/7c51a0660_arsenal_red_saka_7.jpg",
+          "alt": "Arsenal Red & White Saka #7 Jersey – Arsenal football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/7c51a0660_arsenal_red_saka_7.jpg",
+          "file": "arsenal-red-and-white-saka-7-jersey-1-e350a079.jpg",
+          "bytes": 38223,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 392,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7be",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7be",
+      "slug": "barcelona-spider-man-design-yamal-10-jersey",
+      "name": "Barcelona Spider-Man Design Yamal #10 Jersey",
+      "club": "FC Barcelona",
+      "clubLabel": "FC Barcelona",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-FCB-SPD-YAM10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 6,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Special edition Barcelona Spider-Man themed jersey featuring Yamal's name and number 10. A unique collector's piece blending comic-book flair with football heritage.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "FC Barcelona"
+      },
+      "cardLabels": [
+        "FC BARCELONA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/4e0ab668e_barcelona_spider_man_yamal_10.jpg",
+          "alt": "Barcelona Spider-Man Design Yamal #10 Jersey – FC Barcelona football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/4e0ab668e_barcelona_spider_man_yamal_10.jpg",
+          "file": "barcelona-spider-man-design-yamal-10-jersey-1-2d0679bd.jpg",
+          "bytes": 55955,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 371,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7bf",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7bf",
+      "slug": "inter-miami-white-messi-10-jersey",
+      "name": "Inter Miami White Messi #10 Jersey",
+      "club": "Inter Miami",
+      "clubLabel": "Inter Miami",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-INT-WHT-MES10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 7,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Clean white Inter Miami jersey featuring Messi's name and number 10 on the back, with the club crest. A modern classic from Messi's MLS adventure.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Inter Miami"
+      },
+      "cardLabels": [
+        "INTER MIAMI"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/39189d85a_inter_miami_white_messi_10.jpg",
+          "alt": "Inter Miami White Messi #10 Jersey – Inter Miami football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/39189d85a_inter_miami_white_messi_10.jpg",
+          "file": "inter-miami-white-messi-10-jersey-1-73a24ad0.jpg",
+          "bytes": 40395,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 378,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7c0",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7c0",
+      "slug": "barcelona-red-and-blue-split-colour-messi-10-jersey",
+      "name": "Barcelona Red & Blue Split-Colour Messi #10 Jersey",
+      "club": "FC Barcelona",
+      "clubLabel": "FC Barcelona",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-FCB-SPL-MES10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "home",
+        "all",
+        "men"
+      ],
+      "featuredOnHome": true,
+      "homePosition": 8,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Striking Barcelona split-colour jersey with red and blue halves, featuring Messi's name and number 10 on the back. A bold collector's edition celebrating the Blaugrana legacy.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "FC Barcelona"
+      },
+      "cardLabels": [
+        "FC BARCELONA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/08807d7c8_barcelona_split_color_messi_10.jpg",
+          "alt": "Barcelona Red & Blue Split-Colour Messi #10 Jersey – FC Barcelona football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/08807d7c8_barcelona_split_color_messi_10.jpg",
+          "file": "barcelona-red-and-blue-split-colour-messi-10-jersey-1-121bbcff.jpg",
+          "bytes": 30448,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 337,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0c3a3becfe14cb06a7c1",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7c1",
+      "slug": "barcelona-purple-yamal-10-jersey",
+      "name": "Barcelona Purple Yamal #10 Jersey",
+      "club": "FC Barcelona",
+      "clubLabel": "FC Barcelona",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-FCB-PUR-YAM10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "all",
+        "men"
+      ],
+      "featuredOnHome": false,
+      "homePosition": null,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Vibrant purple Barcelona jersey featuring Yamal's name and number 10 on the back, with the club crest. A special edition celebrating the Blaugrana's rising star.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "FC Barcelona"
+      },
+      "cardLabels": [
+        "FC BARCELONA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/1ff708493_barcelona_purple_yamal_10.jpg",
+          "alt": "Barcelona Purple Yamal #10 Jersey – FC Barcelona football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/1ff708493_barcelona_purple_yamal_10.jpg",
+          "file": "barcelona-purple-yamal-10-jersey-1-16a22578.jpg",
+          "bytes": 38343,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 372,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0aebafefc8517740236a",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0aebafefc8517740236a",
+      "slug": "manchester-united-black-ronaldo-7-jersey",
+      "name": "Manchester United Black Ronaldo #7 Jersey",
+      "club": "Manchester United",
+      "clubLabel": "Manchester United",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-MU-BLK-RON7",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "all",
+        "men"
+      ],
+      "featuredOnHome": false,
+      "homePosition": null,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Classic black Manchester United jersey featuring red detailing, the club crest, Nike logo, AIG sponsor design, and Ronaldo's name and number 7 on the back.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Manchester United"
+      },
+      "cardLabels": [
+        "MANCHESTER UNITED"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/842ad7969_manchester_united_black_ronaldo_7.jpg",
+          "alt": "Manchester United Black Ronaldo #7 Jersey – Manchester United football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/842ad7969_manchester_united_black_ronaldo_7.jpg",
+          "file": "manchester-united-black-ronaldo-7-jersey-1-e5281e64.jpg",
+          "bytes": 32276,
+          "contentType": "image/jpeg",
+          "width": 573,
+          "height": 362,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0aebafefc8517740236b",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0aebafefc8517740236b",
+      "slug": "manchester-united-red-beckham-7-jersey",
+      "name": "Manchester United Red Beckham #7 Jersey",
+      "club": "Manchester United",
+      "clubLabel": "Manchester United",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-MU-RED-BEC7",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "all",
+        "men"
+      ],
+      "featuredOnHome": false,
+      "homePosition": null,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Classic red Manchester United jersey featuring black detailing, the club crest, Vodafone sponsor design, and Beckham's name and number 7 on the back.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Manchester United"
+      },
+      "cardLabels": [
+        "MANCHESTER UNITED"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/ec4e86d02_manchester_united_red_beckham_7.jpg",
+          "alt": "Manchester United Red Beckham #7 Jersey – Manchester United football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/ec4e86d02_manchester_united_red_beckham_7.jpg",
+          "file": "manchester-united-red-beckham-7-jersey-1-8264a030.jpg",
+          "bytes": 41466,
+          "contentType": "image/jpeg",
+          "width": 596,
+          "height": 407,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0aebafefc8517740236c",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0aebafefc8517740236c",
+      "slug": "manchester-united-red-ronaldo-7-jersey",
+      "name": "Manchester United Red Ronaldo #7 Jersey",
+      "club": "Manchester United",
+      "clubLabel": "Manchester United",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-MU-RED-RON7",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "all",
+        "men"
+      ],
+      "featuredOnHome": false,
+      "homePosition": null,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Red Manchester United jersey featuring the AIG sponsor design, club details, and Ronaldo's name and number 7 on the back.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "Manchester United"
+      },
+      "cardLabels": [
+        "MANCHESTER UNITED"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/c6930df9b_manchester_united_red_ronaldo_7.jpg",
+          "alt": "Manchester United Red Ronaldo #7 Jersey – Manchester United football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/c6930df9b_manchester_united_red_ronaldo_7.jpg",
+          "file": "manchester-united-red-ronaldo-7-jersey-1-c597d651.jpg",
+          "bytes": 36637,
+          "contentType": "image/jpeg",
+          "width": 600,
+          "height": 376,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    },
+    {
+      "v1Id": "6ace0aebafefc8517740236d",
+      "v1Url": "https://terrace-archive-kit.base44.app/product/6ace0aebafefc8517740236d",
+      "slug": "fc-barcelona-lamine-yamal-10-jersey",
+      "name": "FC Barcelona Lamine Yamal #10 Jersey",
+      "club": "FC Barcelona",
+      "clubLabel": "FC Barcelona",
+      "country": null,
+      "countrySource": null,
+      "pricePaise": 90000,
+      "priceText": "₹900",
+      "sku": "KTR-FCB-YAM10",
+      "audience": [
+        "men"
+      ],
+      "listedOn": [
+        "all",
+        "men"
+      ],
+      "featuredOnHome": false,
+      "homePosition": null,
+      "sizes": [
+        {
+          "label": "S",
+          "disabled": false
+        },
+        {
+          "label": "M",
+          "disabled": false
+        },
+        {
+          "label": "L",
+          "disabled": false
+        },
+        {
+          "label": "XL",
+          "disabled": false
+        },
+        {
+          "label": "XXL",
+          "disabled": false
+        }
+      ],
+      "stockText": "In stock",
+      "description": "Barcelona jersey featuring the iconic red and blue stripes, yellow detailing, the club crest, and Lamine Yamal's name and number 10 on the back.",
+      "v1Details": {
+        "FIT": "Men",
+        "CATEGORY": "Men",
+        "CLUB": "FC Barcelona"
+      },
+      "cardLabels": [
+        "FC BARCELONA"
+      ],
+      "images": [
+        {
+          "sourceUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/d4e21e4ca_barcelona_yamal_10.jpg",
+          "alt": "FC Barcelona Lamine Yamal #10 Jersey – FC Barcelona football jersey",
+          "fullResUrl": "https://base44.app/api/apps/6abb49fbfe292d28156767de/files/mp/public/6abb49fbfe292d28156767de/d4e21e4ca_barcelona_yamal_10.jpg",
+          "file": "fc-barcelona-lamine-yamal-10-jersey-1-3ea29af9.jpg",
+          "bytes": 45489,
+          "contentType": "image/jpeg",
+          "width": 596,
+          "height": 363,
+          "error": null
+        }
+      ],
+      "pageTitle": "Product Detail | Terrace Archive",
+      "metaDescription": "Product Detail on Terrace Archive. A premium digital storefront for football aficionados, offering a curated.",
+      "player": null,
+      "number": null,
+      "season": null,
+      "kitType": null,
+      "fit": null
+    }
+  ],
+  "assets": {
+    "hero": {
+      "sourceUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/3803b5405_generated_image.png/v1/fill/w_1440,h_792,al_c,q_90,usm_0.66_1.00_0.01,enc_webp,quality_auto/3803b5405_generated_image.webp",
+      "alt": "",
+      "fullResUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/3803b5405_generated_image.png",
+      "file": "hero-cf7f023a.jpg",
+      "bytes": 165464,
+      "contentType": "image/jpeg",
+      "width": 1024,
+      "height": 1024,
+      "error": null
+    },
+    "favicon": {
+      "sourceUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/c4e5f9b67_logo.png/v1/fit/w_180,h_180/c4e5f9b67_logo.png",
+      "alt": "favicon",
+      "fullResUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/c4e5f9b67_logo.png",
+      "file": "favicon-c382c63d.jpg",
+      "bytes": 77002,
+      "contentType": "image/jpeg",
+      "width": 1024,
+      "height": 1024,
+      "error": null
+    },
+    "og-image": {
+      "sourceUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/c4e5f9b67_logo.png/v1/fill/w_1200,h_630/c4e5f9b67_logo.png",
+      "alt": "OG image",
+      "fullResUrl": "https://media.base44.com/images/public/6abb49fbfe292d28156767de/c4e5f9b67_logo.png",
+      "file": "favicon-c382c63d.jpg",
+      "bytes": 77002,
+      "contentType": "image/jpeg",
+      "width": 1024,
+      "height": 1024,
+      "error": null
+    }
+  }
+}
