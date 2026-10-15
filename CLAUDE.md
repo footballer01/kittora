@@ -35,8 +35,16 @@ customer data or private planning notes into tracked files. Private context live
   country or fit. Empty fields stay empty for admins to fill in.
 - **Contact details, fees, the UPI ID and policy text are not hard-coded.** They come
   from admin Settings, and the storefront hides empty fields.
+- **Abuse limits:**
+  - Checkout: cap unpaid orders per phone and per IP, cap quantity per item, and use
+    Cloudflare Turnstile.
+  - Order numbers are random, and tracking lookups are rate-limited.
+  - Admin login goes through an Edge Function (5 attempts per 15 min per IP + username),
+    with optional TOTP.
+  - Payment screenshots go in a private bucket: images only, ≤ 5 MB, and only for
+    orders awaiting payment.
 - **Edge Functions** (Deno, in `supabase/functions/`) handle Gmail SMTP on port 465
-  through `email_queue`, and the admin publish trigger.
+  through `email_queue`, admin login, Turnstile checks, and the admin publish trigger.
 
 ## Commands
 
