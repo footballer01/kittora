@@ -48,7 +48,20 @@ customer data or private planning notes into tracked files. Private context live
 
 ## Commands
 
-`npm run dev` · `typecheck` · `lint` · `test` · `test:e2e` · `preview` · `db:generate`
+`npm run dev` · `typecheck` · `lint` · `test` · `test:e2e` · `preview` · `db:generate` · `seed -- --target staging|live` · `rls:check` · `import:*`
+
+## Data and schema
+
+- **Schema:** `lib/db/schema.ts` (Drizzle), with RLS policies defined alongside the
+  tables. Hand-written SQL (functions, triggers, grants, storage) lives in custom
+  migrations in `drizzle/`.
+- **Testing RLS:** every RLS or policy change needs a test in `tests/db/rls.test.ts`,
+  which runs the real migrations on PGlite.
+- **Image compression:** `lib/images/compress.ts` is shared by the admin upload and the
+  import script. It outputs WebP, at most 1600px on the long edge, aiming for < 250 KB.
+- **Colour maths:** `lib/color.ts` handles OKLCH and WCAG contrast.
+- **v1 import outputs:** `scripts/import/`. `tokens.proposal.json` is a proposal until
+  Phase 1 applies it.
 
 ## Conventions
 

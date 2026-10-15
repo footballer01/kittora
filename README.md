@@ -3,7 +3,7 @@
 Football jerseys for fans in India, curated like museum pieces. This is the owned
 codebase for the store currently published as **Terrace Archive**.
 
-**Status:** Phase 0 (skeleton). The catalogue, checkout and admin areas arrive in later phases.
+**Status:** Phase 0.5 — v1 imported (13 products, theme, copy, baseline). Database schema, RLS and seed are ready; Supabase projects not yet created. Catalogue, checkout and admin arrive in later phases.
 
 ## How it works
 
@@ -67,7 +67,31 @@ npm run dev                  # http://localhost:3000
 | `npm run typecheck` / `lint` / `test` | Static checks and unit tests |
 | `npm run test:e2e` | Builds the static site and runs Playwright against it at 390px and 1440px |
 | `npm run preview` | Builds and serves `out/` locally exactly as Cloudflare will |
-| `npm run db:generate` / `db:migrate` | Drizzle migrations (uses `DATABASE_URL_DIRECT`) |
+| `npm run db:generate` | Generate a migration from `lib/db/schema.ts` |
+| `npm run db:migrate` / `db:migrate:live` | Apply migrations to staging / live |
+| `npm run seed -- --target staging\|live` | Migrate, upload images, upsert products and variants, create admins, run RLS checks |
+| `npm run rls:check -- --target staging\|live` | Probe a project with the anon key: catalogue readable, nothing writable, orders hidden |
+| `npm run import:*` | Re-run the v1 import (see `scripts/import/README.md`) |
+
+## Setting up Supabase
+
+1. Create two free projects at supabase.com, **kittora-staging** and **kittora-live**,
+   in the Mumbai region (ap-south-1).
+2. For each project, copy these into `.env.local` as `STAGING_*` / `LIVE_*` (see
+   `.env.example`):
+   - From **Project Settings → API**: the URL, the `anon` key and the `service_role` key.
+   - From **Connect → Session pooler**: the connection string (port 5432), with the
+     database password filled in.
+3. Fill in `ADMIN_1..3_USERNAME` and `ADMIN_1..3_PASSWORD`. Passwords must be at least
+   12 characters.
+4. Run `npm run seed -- --target staging`, check it, then `npm run seed -- --target live`.
+
+Re-running the seed updates only v1-sourced fields (name, price, SKU, club,
+description, images). It never touches what admins fill in: player, number, season,
+kit type, fit and stock.
+
+The migrations and RLS rules are also tested in CI against an in-memory Postgres
+(`tests/db/`), so policy changes are checked on every PR.
 
 ## Environment
 
@@ -78,13 +102,13 @@ There are two Supabase projects, both on the free plan:
 
 | Where | What |
 | --- | --- |
-| `.env.local` (never committed) | Everything in `.env.example`, using staging values |
+| `.env.local` (never committed) | Everything in `.env.example`: `NEXT_PUBLIC_*` with staging values, plus `STAGING_*` and `LIVE_*` for scripts |
 | GitHub repo **variables** (public values) | `DEPLOY_ENABLED`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` |
 | GitHub repo **secrets** | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `LIVE_DATABASE_URL`, `STAGING_DATABASE_URL` |
 | Supabase Edge Function secrets | `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `GITHUB_DEPLOY_TOKEN`, `GITHUB_REPO` |
 
-- **The service-role key never ships to the browser.** It is used only by local scripts
-  (seed) and lives in `.env.local`.
+- **The service-role keys never ship to the browser.** They are used only by local
+  scripts (migrations, seed) and live in `.env.local`.
 - **Admin usernames and passwords are never committed.** They are read only by the seed
   script. Each admin signs in through Supabase Auth with a placeholder address of the
   form `<username>@admin.kittora.internal`.
