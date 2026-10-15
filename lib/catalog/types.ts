@@ -1,4 +1,5 @@
 export type Audience = "men" | "women" | "kids";
+export type KitType = "home" | "away" | "third" | "retro" | "special";
 
 export type CatalogImage = { src: string; width: number; height: number; alt: string };
 
@@ -14,6 +15,11 @@ export type CatalogProduct = {
   name: string;
   sku: string | null;
   club: string | null;
+  /** Admin-filled (or imported as-is). Never inferred from the name. */
+  country: string | null;
+  season: string | null;
+  kitType: KitType | null;
+  fit: string | null;
   /** Shirt number; null until an admin fills it in. Never parsed from the name. */
   number: number | null;
   player: string | null;

@@ -216,6 +216,17 @@
     display: none;
   }
 }
+/* Card heart: quiet until hover on desktop; always shown once saved or on touch. */
+@media (hover: hover) {
+  .card-wish:not([aria-pressed="true"]) {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .card:hover .card-wish,
+  .card-wish:focus-visible {
+    opacity: 1;
+  }
+}
 .card:has(.card-flip-input:checked) .card-back,
 .card:has(.card-flip-input:checked) .card-sizes {
   opacity: 1;

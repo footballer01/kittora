@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/ui/icons";
 
@@ -19,9 +20,9 @@ export function Hero({ image }: { image: { src: string; width: number; height: n
           <ButtonLink href="/shop" size="lg" iconEnd={<ArrowRightIcon width={18} height={18} />}>
             Shop the Archive
           </ButtonLink>
-          <a href="/category/men" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-ink underline-offset-4 hover:underline">
+          <Link href="/category/men" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-ink underline-offset-4 hover:underline">
             Explore Men
-          </a>
+          </Link>
         </div>
       </div>
       <div className="relative overflow-hidden rounded-[28px] bg-surface">

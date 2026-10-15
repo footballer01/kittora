@@ -5,7 +5,9 @@ import { Footer } from "@/components/store/footer";
 import { Header } from "@/components/store/header";
 import { Toaster } from "@/components/ui/toaster";
 import { countCategories } from "@/lib/catalog/categories";
+import { LiveCatalog } from "@/lib/catalog/live";
 import { getCatalog } from "@/lib/catalog/source";
+import { SITE_NAME, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 // v1's fonts, self-hosted at build time by next/font.
@@ -17,8 +19,10 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "600"], v
 const bigShoulders = Big_Shoulders({ subsets: ["latin"], variable: "--font-big-shoulders", display: "swap", preload: false });
 
 export const metadata: Metadata = {
-  title: { default: "Terrace Archive", template: "%s | Terrace Archive" },
+  metadataBase: new URL(siteUrl()),
+  title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: "Kittora — authenticated football jerseys, curated like museum pieces. Delivered across India.",
+  openGraph: { siteName: SITE_NAME, locale: "en_IN", type: "website" },
 };
 
 // Name only the clicked card's image "product-hero" so it morphs into the
@@ -48,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CartDrawer />
         <Toaster />
         <CartHydrator />
+        <LiveCatalog />
         <script dangerouslySetInnerHTML={{ __html: VIEW_TRANSITION_SCRIPT }} />
         <script type="speculationrules" dangerouslySetInnerHTML={{ __html: SPECULATION_RULES }} />
       </body>

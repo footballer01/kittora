@@ -36,6 +36,20 @@
       "when": 1792070653541,
       "tag": "0004_edits_grants_media_bucket",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792077585030,
+      "tag": "0005_guest_checkout",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792077590313,
+      "tag": "0006_media_bucket_public",
+      "breakpoints": true
     }
   ]
 }

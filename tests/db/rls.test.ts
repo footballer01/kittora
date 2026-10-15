@@ -74,7 +74,9 @@ describe("anonymous visitor (anon key)", () => {
   });
 });
 
-describe("signed-in customer", () => {
+// No customer accounts exist (guest checkout), but any stray signed-in
+// non-admin user must get no more than anon.
+describe("signed-in non-admin", () => {
   it("sees only published products", async () => {
     await as(db, "authenticated", customerId, async () => {
       expect(await rows(`SELECT id FROM public.products WHERE id = $1`, [draftId])).toHaveLength(0);
@@ -168,6 +170,10 @@ describe("edits", () => {
     });
   });
 
+  it("media bucket is publicly readable (copied to the static site) but not writable", async () => {
+    expect(await rows(`SELECT public FROM storage.buckets WHERE id = 'product-media'`)).toEqual([{ public: true }]);
+  });
+
   it("anon cannot upload to the media bucket", async () => {
     await as(db, "anon", null, async () => {
       await expect(db.query(`INSERT INTO storage.objects (bucket_id, name) VALUES ('product-media', 'v.mp4')`)).rejects.toThrow(/row-level security/);
@@ -187,6 +193,10 @@ describe("constraints", () => {
     await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 1_500_000, durationMs: 6000 })).resolves.toBeDefined();
     await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 3_000_000, durationMs: 6000 })).rejects.toThrow(/products_video_limits/);
     await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 1_000_000, durationMs: 12000 })).rejects.toThrow(/products_video_limits/);
+  });
+
+  it("keeps orders guest-only (no user link)", async () => {
+    expect(await rows(`SELECT column_name FROM information_schema.columns WHERE table_name = 'orders' AND column_name = 'user_id'`)).toEqual([]);
   });
 
   it("treats admin usernames as case-insensitive", async () => {

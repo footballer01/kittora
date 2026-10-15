@@ -1,11 +1,13 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { KIT_TYPE_LABEL, slugify } from "@/lib/catalog/filters";
 import { defaultHref, type CatalogEdit, type CatalogProduct, type ProductHref } from "@/lib/catalog/types";
 import { TruckIcon, ReturnIcon } from "@/components/ui/icons";
 import { BuyBox } from "./buy-box";
 import { EditRail } from "./edit-rail";
 import { SampleBadge } from "./peg-rail";
-import { Price } from "./price";
+import { LivePrice } from "./live";
 import { ProductGallery } from "./product-gallery";
 
 /**
@@ -30,6 +32,21 @@ export function ProductView({
   const sameEdits = edits.filter((e) => e.productIds.includes(product.id));
   const audience = product.audience[0];
   const storyImage = product.backImage ?? product.image;
+  const sameClub = product.club ? catalog.filter((p) => p.club === product.club && p.id !== product.id) : [];
+  // Only fields admins filled in (or v1 stated); empty ones are simply not shown.
+  const details: [string, ReactNode][] = [];
+  if (product.player)
+    details.push([
+      "Player",
+      <a key="p" href={`/player/${slugify(product.player)}`} className="underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+        {product.player}
+      </a>,
+    ]);
+  if (product.number != null) details.push(["Number", `#${product.number}`]);
+  if (product.season) details.push(["Season", product.season]);
+  if (product.kitType) details.push(["Kit", KIT_TYPE_LABEL[product.kitType]]);
+  if (product.fit) details.push(["Fit", product.fit]);
+  if (product.country) details.push(["Country", product.country]);
 
   return (
     <main className="pb-28 lg:pb-0">
@@ -58,10 +75,14 @@ export function ProductView({
           <ProductGallery images={product.images} video={product.video} name={product.name} />
 
           <div className="lg:sticky lg:top-28 lg:self-start">
-            {product.club && <p className="text-step-n1 text-ink-muted">{product.club}</p>}
+            {product.club && (
+              <a href={`/club/${slugify(product.club)}`} className="text-step-n1 text-ink-muted hover:text-ink">
+                {product.club}
+              </a>
+            )}
             <h1 className="mt-2 font-heading text-step-4 leading-[1.05] font-bold tracking-[-0.025em]">{product.name}</h1>
             <div className="mt-4 flex items-baseline gap-4">
-              <Price paise={product.pricePaise} tone="brand" className="text-step-2" />
+              <LivePrice product={product} tone="brand" className="text-step-2" />
               {product.sku && <span className="font-mono text-step-n2 text-ink-muted">{product.sku}</span>}
             </div>
             <p className="mt-1 text-step-n2 text-ink-muted">Inclusive of all taxes</p>
@@ -78,6 +99,17 @@ export function ProductView({
                 <ReturnIcon className="shrink-0 text-ink" width={20} height={20} /> Seven-day returns on unworn jerseys
               </li>
             </ul>
+
+            {details.length > 0 && (
+              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 text-step-n1">
+                {details.map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="text-ink-muted">{k}</dt>
+                    <dd className="mt-0.5 font-medium text-ink">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
 
             <div className="mt-8 divide-y divide-line border-y border-line">
               {product.description && (
@@ -133,6 +165,16 @@ export function ProductView({
           sample={sample}
         />
       ))}
+
+      {sameClub.length > 0 && product.club && (
+        <EditRail
+          edit={{ slug: `club-${slugify(product.club)}`, title: product.club, description: null, productIds: [] }}
+          eyebrow="More from the club"
+          viewAll={`/club/${slugify(product.club)}`}
+          products={sameClub}
+          href={href}
+        />
+      )}
     </main>
   );
 }
