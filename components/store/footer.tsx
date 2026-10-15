@@ -1,16 +1,11 @@
 import Link from "next/link";
 import { visibleCategories, type CategoryCounts } from "@/lib/catalog/categories";
-import { InstagramIcon, ShieldIcon, ReturnIcon, TruckIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { InstagramIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { Logo } from "./logo";
 
 /** Contact details come from admin Settings (Phase 5); empty ones are hidden. */
 export type FooterContact = { whatsapp?: string | null; email?: string | null; instagram?: string | null };
 
-const TRUST = [
-  { icon: ShieldIcon, title: "Authenticated craft", body: "Every jersey verified for authenticity and quality." },
-  { icon: TruckIcon, title: "Pan-India delivery", body: "Secure shipping to your doorstep, tracked end to end." },
-  { icon: ReturnIcon, title: "Easy returns", body: "Seven-day hassle-free returns on unworn jerseys." },
-];
 
 export function Footer({ counts, contact = {} }: { counts: CategoryCounts; contact?: FooterContact }) {
   const shop = [{ label: "All jerseys", href: "/shop" }, ...visibleCategories(counts)];
@@ -23,20 +18,7 @@ export function Footer({ counts, contact = {} }: { counts: CategoryCounts; conta
   ];
   const wa = contact.whatsapp?.replace(/\D/g, "");
   return (
-    <footer className="mt-auto border-t border-line bg-surface-2">
-      <div className="mx-auto grid max-w-7xl gap-6 border-b border-line px-4 py-10 sm:grid-cols-3 sm:px-6 lg:px-8">
-        {TRUST.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="flex gap-3.5">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/12 text-accent">
-              <Icon />
-            </span>
-            <div>
-              <p className="font-heading font-semibold text-ink">{title}</p>
-              <p className="text-step-n1 text-ink-muted">{body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+    <footer className="mt-auto border-t border-line">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
         <div className="max-w-xs">
           <Logo />

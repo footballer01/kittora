@@ -21,7 +21,7 @@ export function Header({ counts }: { counts: CategoryCounts }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/70">
+    <header className="vt-header sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:h-[72px] lg:px-8">
         <Logo />
         <nav aria-label="Main" className="ml-8 hidden items-center gap-1 md:flex">
@@ -61,8 +61,8 @@ export function Header({ counts }: { counts: CategoryCounts }) {
               </IconButton>
             </Dialog.Trigger>
             <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-[min(86vw,360px)] flex-col border-l border-line bg-surface-2 p-4 data-[state=closed]:animate-drawer-out data-[state=open]:animate-drawer-in">
+              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-fade-out transition-opacity duration-200 starting:opacity-0" />
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-[min(86vw,360px)] flex-col border-l border-line bg-surface-2 p-4 data-[state=closed]:animate-drawer-out transition-transform duration-300 ease-out starting:translate-x-full">
                 <div className="flex items-center justify-between">
                   <Dialog.Title className="font-heading text-step-1 font-bold">Menu</Dialog.Title>
                   <Dialog.Close asChild>

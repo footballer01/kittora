@@ -15,7 +15,7 @@ export function Toaster() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-center gap-3 rounded-2xl border border-line bg-surface py-3 pr-2 pl-4 text-step-n1 text-ink shadow-[0_12px_40px_-12px_rgb(0_0_0/0.6)]"
+          className="pointer-events-auto flex w-full max-w-sm items-center transition duration-200 starting:translate-y-2 starting:opacity-0 gap-3 rounded-2xl border border-line bg-surface py-3 pr-2 pl-4 text-step-n1 text-ink shadow-[0_12px_40px_-12px_rgb(0_0_0/0.6)]"
         >
           <span
             className={cn(

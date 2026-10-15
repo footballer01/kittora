@@ -22,6 +22,20 @@
       "when": 1792066165442,
       "tag": "0002_storage_and_triggers",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792070652924,
+      "tag": "0003_edits_stories_media",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792070653541,
+      "tag": "0004_edits_grants_media_bucket",
+      "breakpoints": true
     }
   ]
 }

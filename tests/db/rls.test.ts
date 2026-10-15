@@ -129,11 +129,64 @@ describe("admin", () => {
   });
 });
 
+describe("edits", () => {
+  let editId: string;
+  beforeAll(async () => {
+    const e = await db.query<{ id: string }>(
+      `INSERT INTO public.edits (slug, title, published) VALUES ('live', 'Live edit', true), ('draft-edit', 'Draft edit', false) RETURNING id`,
+    );
+    editId = e.rows[0].id;
+    await db.query(`INSERT INTO public.edit_items (edit_id, product_id, position) VALUES ($1, $2, 0), ($1, $3, 1), ($4, $2, 0)`, [
+      editId,
+      publishedId,
+      draftId,
+      e.rows[1].id,
+    ]);
+  });
+
+  it("anon sees published edits and only their published products", async () => {
+    await as(db, "anon", null, async () => {
+      expect(await rows(`SELECT slug FROM public.edits`)).toEqual([{ slug: "live" }]);
+      expect(await rows(`SELECT product_id FROM public.edit_items`)).toEqual([{ product_id: publishedId }]);
+    });
+  });
+
+  it("anon and customers cannot write edits", async () => {
+    await as(db, "anon", null, async () => {
+      await expect(db.query(`INSERT INTO public.edits (slug, title) VALUES ('x', 'x')`)).rejects.toThrow(/permission denied/);
+    });
+    await as(db, "authenticated", customerId, async () => {
+      await expect(db.query(`INSERT INTO public.edits (slug, title) VALUES ('x', 'x')`)).rejects.toThrow(/row-level security/);
+      await expect(db.query(`DELETE FROM public.edit_items`)).resolves.toMatchObject({ affectedRows: 0 });
+    });
+  });
+
+  it("admins can curate edits", async () => {
+    await as(db, "authenticated", adminId, async () => {
+      await db.query(`UPDATE public.edit_items SET position = 5 WHERE edit_id = $1 AND product_id = $2`, [editId, publishedId]);
+      expect(await rows(`SELECT count(*)::int AS n FROM public.edits`)).toEqual([{ n: 2 }]);
+    });
+  });
+
+  it("anon cannot upload to the media bucket", async () => {
+    await as(db, "anon", null, async () => {
+      await expect(db.query(`INSERT INTO storage.objects (bucket_id, name) VALUES ('product-media', 'v.mp4')`)).rejects.toThrow(/row-level security/);
+    });
+  });
+});
+
 describe("constraints", () => {
   it("rejects negative prices and stock, and out-of-range shirt numbers", async () => {
     await expect(db.query(`INSERT INTO public.products (slug, name, price_paise) VALUES ('n', 'n', -1)`)).rejects.toThrow(/products_price_nonnegative/);
     await expect(db.query(`UPDATE public.variants SET stock = -1`)).rejects.toThrow(/variants_stock_nonnegative/);
     await expect(db.query(`UPDATE public.products SET number = 100`)).rejects.toThrow(/products_number_range/);
+  });
+
+  it("limits detail videos to 2 MB and 5–8 seconds", async () => {
+    const set = (v: object) => db.query(`UPDATE public.products SET video = $1 WHERE id = $2`, [JSON.stringify(v), publishedId]);
+    await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 1_500_000, durationMs: 6000 })).resolves.toBeDefined();
+    await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 3_000_000, durationMs: 6000 })).rejects.toThrow(/products_video_limits/);
+    await expect(set({ path: "v.mp4", poster: "p.webp", bytes: 1_000_000, durationMs: 12000 })).rejects.toThrow(/products_video_limits/);
   });
 
   it("treats admin usernames as case-insensitive", async () => {

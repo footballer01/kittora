@@ -65,7 +65,17 @@ customer data or private planning notes into tracked files. Private context live
   `npm run tokens`. Never edit the CSS by hand.
 - **Theming:** dark is the default. Light applies under `[data-theme="light"]`.
 - **Components:** primitives are in `components/ui/`, store pieces in
-  `components/store/`. `/styleguide` shows every one of them.
+  `components/store/`.
+- **Design review:** happens at `/preview` (home) and `/preview/product/*`. Their sample
+  content lives only in `lib/preview/sample.ts` and is labelled as sample.
+- **`/styleguide`:** `app/styleguide/page.dev.tsx` exists in `next dev` only.
+- **Product links:** use plain `<a data-vt>`, so cross-document view transitions and
+  speculation rules apply.
+- **Quiet luxury:** no countdowns, urgency banners or strike-through prices. Low stock
+  is shown as calm text only.
+- **Images (Phase 2):** product images and videos are copied from Supabase Storage into
+  the static build at publish time and served by Cloudflare, so traffic never uses
+  Supabase egress.
 - **Catalogue data:** comes from `lib/catalog/source.ts`. It reads the v1 import until
   Phase 2 switches it to Supabase.
 

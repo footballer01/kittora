@@ -23,8 +23,8 @@ export function CartDrawer() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
-        <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-line bg-surface-2 shadow-2xl data-[state=closed]:animate-drawer-out data-[state=open]:animate-drawer-in">
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=closed]:animate-fade-out transition-opacity duration-200 starting:opacity-0" />
+        <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-line bg-surface-2 shadow-2xl data-[state=closed]:animate-drawer-out transition-transform duration-300 ease-out starting:translate-x-full">
           <div className="flex items-center justify-between border-b border-line px-5 py-3">
             <Dialog.Title className="font-heading text-step-1 font-bold">
               Cart {count > 0 && <span className="font-mono text-step-n1 font-medium text-ink-muted">({count})</span>}

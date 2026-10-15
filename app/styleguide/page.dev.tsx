@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import tokens from "@/scripts/import/tokens.proposal.json";
 import { Button, ButtonLink, IconButton } from "@/components/ui/button";
 import { ArrowRightIcon, BagIcon, SearchIcon } from "@/components/ui/icons";
 import { SelectField, TextArea, TextField } from "@/components/ui/input";
@@ -10,13 +9,12 @@ import { ProductCard } from "@/components/store/product-card";
 import { CATEGORIES, countCategories, visibleCategories } from "@/lib/catalog/categories";
 import { MIN_PEG_RAIL, homeShowcase } from "@/lib/catalog/peg-rail";
 import { getCatalog } from "@/lib/catalog/source";
-import { contrast } from "@/lib/color";
 import { cn } from "@/lib/cn";
 import { AddToCartDemo, SizeSelectorDemo, ToastDemo } from "./demos";
 
+// Dev-only (page.dev.tsx is excluded from production builds by next.config).
 export const metadata: Metadata = { title: "Style guide", robots: { index: false, follow: false } };
 
-const SWATCHES = ["--bg", "--surface-2", "--surface", "--line", "--line-strong", "--ink-muted", "--ink", "--brand-50", "--brand-100", "--brand", "--brand-600", "--brand-700", "--brand-text", "--accent", "--success", "--warning"] as const;
 
 // Preview only: sample shirt numbers to show the rail. Real numbers come from admins.
 const PREVIEW_NUMBERS = [7, 10, 22, 9, 11, 8];
@@ -34,43 +32,16 @@ export default function StyleGuide() {
         <p className="text-step-n1 font-medium text-brand-text">Design system · Phase 1</p>
         <h1 className="mt-2 text-step-5 font-extrabold">Style guide</h1>
         <p className="mt-3 max-w-[62ch] text-ink-muted">
-          v1&rsquo;s dark theme, coral and type, refined. Dark is the default; a light variant is shown alongside. Header and footer are the live ones on this page.
+          Developer reference for components. The design review page is /preview.
         </p>
         <nav aria-label="Sections" className="mt-6 flex flex-wrap gap-2 text-step-n1">
-          {["Colour", "Type", "Buttons", "Inputs", "Sizes", "Cards", "Peg rail", "Cart & toast", "Navigation", "Light"].map((s) => (
+          {["Type", "Buttons", "Inputs", "Sizes", "Cards", "Peg rail", "Cart & toast", "Navigation", "Light"].map((s) => (
             <a key={s} href={`#${slug(s)}`} className="rounded-full border border-line px-3 py-1.5 text-ink-muted hover:border-line-strong hover:text-ink">
               {s}
             </a>
           ))}
         </nav>
       </div>
-
-      <Section title="Colour" note="Tokens from tokens.proposal.json. Every text pair passes WCAG AA.">
-        <div className="grid gap-6 lg:grid-cols-2">
-          {(["dark", "light"] as const).map((theme) => (
-            <div key={theme} data-theme={theme} className="rounded-[var(--radius-card)] border border-line p-4">
-              <p className="mb-3 font-heading font-semibold capitalize">{theme}</p>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {SWATCHES.map((name) => {
-                  const value = (tokens.themes[theme] as Record<string, { value: string }>)[name].value;
-                  const onBg = contrast(value, tokens.themes[theme]["--bg"].value);
-                  return (
-                    <div key={name} className="overflow-hidden rounded-xl border border-line">
-                      <div className="h-12" style={{ background: value }} />
-                      <div className="px-2.5 py-2">
-                        <p className="font-mono text-[0.7rem] text-ink">{name}</p>
-                        <p className="font-mono text-[0.7rem] text-ink-muted">
-                          {value} · {onBg.toFixed(1)}:1
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
 
       <Section title="Type" note="Outfit for headings, Inter for text, JetBrains Mono for prices and SKUs. 17px base, 1.25 ratio.">
         <div className="grid gap-5">

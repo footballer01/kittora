@@ -1,47 +1,87 @@
 import Image from "next/image";
-import Link from "next/link";
-import type { CatalogProduct } from "@/lib/catalog/types";
+import { defaultHref, isWide, type CatalogProduct, type ProductHref } from "@/lib/catalog/types";
 import { cn } from "@/lib/cn";
 import { Price } from "./price";
 
 /**
- * v1's photos are wide (front and back side by side), so the frame is 4:3 and
- * the image is contained on white instead of being cropped like on v1.
+ * Image-first card, one 4:5 frame on a calm white backdrop. Desktop hover (or
+ * the touch "Quick look" toggle) crossfades to the back image and reveals sizes.
+ * Product links are plain <a> so cross-document view transitions and
+ * speculation rules apply.
  */
-export function ProductCard({ product, priority = false, className }: { product: CatalogProduct; priority?: boolean; className?: string }) {
+export function ProductCard({
+  product,
+  href = defaultHref,
+  priority = false,
+  className,
+}: {
+  product: CatalogProduct;
+  href?: ProductHref;
+  priority?: boolean;
+  className?: string;
+}) {
+  const { image, backImage } = product;
+  const sizes = product.variants;
   return (
-    <article className={cn("group relative flex flex-col", className)}>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-card)] bg-white ring-1 ring-line">
-        {product.image ? (
+    <article className={cn("card group relative", className)} data-vt-root>
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-white" data-vt-img>
+        {image ? (
           <Image
-            src={product.image.src}
-            alt={product.image.alt}
-            width={product.image.width}
-            height={product.image.height}
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
             priority={priority}
-            sizes="(min-width: 1024px) 300px, 50vw"
-            className="size-full object-contain p-[6%] transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            sizes="(min-width: 1024px) 300px, 46vw"
+            className={cn("absolute inset-0 size-full", isWide(image) ? "object-contain p-[7%]" : "object-cover")}
           />
         ) : (
           <div className="flex size-full items-center justify-center text-step-n1 text-neutral-500">Photo coming soon</div>
         )}
-      </div>
-      <div className="relative mt-3.5 flex flex-1 flex-col gap-1 overflow-hidden pr-14">
-        {product.number != null && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -top-2 right-0 font-number text-[4.5rem] leading-none font-black text-number transition-colors duration-200 group-hover:text-brand"
-          >
-            {product.number}
-          </span>
+        {backImage && (
+          <Image
+            src={backImage.src}
+            alt=""
+            width={backImage.width}
+            height={backImage.height}
+            loading="lazy"
+            sizes="(min-width: 1024px) 300px, 46vw"
+            className={cn("card-back absolute inset-0 size-full", isWide(backImage) ? "object-contain p-[7%]" : "object-cover")}
+          />
         )}
+        {sizes.length > 0 && (
+          <ul aria-label="Sizes" className="card-sizes absolute inset-x-3 bottom-3 flex flex-wrap justify-center gap-1.5">
+            {sizes.map((v) => (
+              <li
+                key={v.size}
+                className={cn(
+                  "rounded-full bg-white/90 px-2.5 py-1 font-mono text-[0.72rem] font-semibold text-neutral-900 shadow-sm backdrop-blur",
+                  v.stock === 0 && "text-neutral-400",
+                )}
+              >
+                {v.size}
+              </li>
+            ))}
+          </ul>
+        )}
+        {(backImage || sizes.length > 0) && (
+          <label className="card-flip absolute top-2 right-2 z-10 flex size-11 cursor-pointer items-center justify-center rounded-full bg-white/85 text-neutral-900 shadow-sm backdrop-blur has-focus-visible:outline-2 has-focus-visible:outline-focus">
+            <input type="checkbox" className="card-flip-input sr-only" aria-label={`Quick look: ${product.name}`} />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+              <path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3" />
+              <path d="M18 3v4h-4M6 21v-4h4" />
+            </svg>
+          </label>
+        )}
+      </div>
+      <div className="mt-4 grid gap-1 pr-2">
         {product.club && <p className="text-step-n1 text-ink-muted">{product.club}</p>}
-        <h3 className="font-heading text-[1.05rem] leading-snug font-semibold tracking-[-0.01em] text-ink">
-          <Link href={`/product/${product.slug}`} className="after:absolute after:inset-0 after:content-['']">
+        <h3 className="font-heading text-[1.02rem] leading-snug font-semibold tracking-[-0.01em] text-ink">
+          <a href={href(product)} data-vt className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-[var(--radius-card)] focus-visible:after:outline-2 focus-visible:after:outline-focus">
             {product.name}
-          </Link>
+          </a>
         </h3>
-        <Price paise={product.pricePaise} className="mt-auto pt-1 text-step-0" />
+        <Price paise={product.pricePaise} className="text-step-n1" />
       </div>
     </article>
   );

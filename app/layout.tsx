@@ -13,12 +13,22 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 const outfit = Outfit({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-outfit", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-jetbrains", display: "swap", preload: false });
 // New in v2: shirt numbers and the peg rail only.
-const bigShoulders = Big_Shoulders({ subsets: ["latin"], weight: ["800", "900"], variable: "--font-big-shoulders", display: "swap", preload: false });
+// Variable font, so shirt numbers can animate their weight on hover.
+const bigShoulders = Big_Shoulders({ subsets: ["latin"], variable: "--font-big-shoulders", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   title: { default: "Terrace Archive", template: "%s | Terrace Archive" },
   description: "Kittora — authenticated football jerseys, curated like museum pieces. Delivered across India.",
 };
+
+// Name only the clicked card's image "product-hero" so it morphs into the
+// product page's first photo (one named element per page, so repeats are fine).
+const VIEW_TRANSITION_SCRIPT = `addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-vt]");if(!a)return;document.querySelectorAll("[data-vt-img],[data-vt-hero]").forEach(function(n){n.style.viewTransitionName=""});var r=a.closest("[data-vt-root]"),i=r&&r.querySelector("[data-vt-img]");if(i)i.style.viewTransitionName="product-hero"},true);addEventListener("pageshow",function(){document.querySelectorAll("[data-vt-img]").forEach(function(n){n.style.viewTransitionName=""})});`;
+
+// Prefetch product pages when a link is hovered or pressed (Chromium; ignored elsewhere).
+const SPECULATION_RULES = JSON.stringify({
+  prefetch: [{ where: { or: [{ href_matches: "/product/*" }, { href_matches: "/preview/product/*" }] }, eagerness: "moderate" }],
+});
 
 export const viewport: Viewport = { themeColor: "#09090b", colorScheme: "dark" };
 
@@ -38,6 +48,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CartDrawer />
         <Toaster />
         <CartHydrator />
+        <script dangerouslySetInnerHTML={{ __html: VIEW_TRANSITION_SCRIPT }} />
+        <script type="speculationrules" dangerouslySetInnerHTML={{ __html: SPECULATION_RULES }} />
       </body>
     </html>
   );
