@@ -66,3 +66,6 @@ CLAUDE.local.md
 /scripts/import/copy.json
 /scripts/import/report.html
 /scripts/import/lighthouse/
+
+# local UI screenshots
+/screenshots/

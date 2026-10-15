@@ -1,18 +1,262 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-/* Placeholder tokens. Phase 1 replaces these with values from scripts/import/theme.json. */
-:root {
-  --bg: #ffffff;
-  --ink: #171717;
-}
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-text: var(--brand-text);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-focus: var(--focus);
+  --color-number: var(--number);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-number: var(--font-big-shoulders), var(--font-outfit), sans-serif;
+
+  --text-step-n2: var(--step-n2);
+  --text-step-n1: var(--step-n1);
+  --text-step-0: var(--step-0);
+  --text-step-1: var(--step-1);
+  --text-step-2: var(--step-2);
+  --text-step-3: var(--step-3);
+  --text-step-4: var(--step-4);
+  --text-step-5: var(--step-5);
+  --text-step-6: var(--step-6);
+
+  --radius-input: var(--radius-input);
+  --radius-card: var(--radius-card);
+
+  --animate-hang: hang 520ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  --animate-drawer-out: drawer-out 180ms ease-in both;
+  --animate-fade-out: fade-out 160ms ease-in both;
 }
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, sans-serif;
+@keyframes hang {
+  from {
+    transform: rotate(-7deg) translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes drawer-out {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  /* Themed subtrees (e.g. light previews) paint their own background. */
+  [data-theme] {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--brand);
+    color: var(--brand-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ premium details */
+
+/* 1. Cross-document view transitions: the clicked card image becomes the
+   product hero; the header holds still. Browsers without support navigate normally. */
+@view-transition {
+  navigation: auto;
+}
+.vt-header {
+  view-transition-name: site-header;
+}
+::view-transition-group(*) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+::view-transition-group(site-header) {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* 10. Shirt numbers: variable-weight swell on hover. */
+.shirt-number {
+  font-family: var(--font-number);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: var(--number);
+  user-select: none;
+  transition:
+    font-weight 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 200ms ease;
+}
+.group:hover .shirt-number,
+.group:focus-within .shirt-number {
+  font-weight: 900;
+  color: var(--brand);
+}
+
+/* 2. Scroll-driven motion, in two places only. Static elsewhere (e.g. Firefox). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-settle {
+      animation: hero-settle linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+    .rail-parallax {
+      animation: rail-parallax linear both;
+      animation-timeline: view(inline);
+    }
+  }
+}
+@keyframes hero-settle {
+  to {
+    transform: translateY(6%) scale(0.97);
+  }
+}
+@keyframes rail-parallax {
+  from {
+    transform: translateX(14%);
+  }
+  to {
+    transform: translateX(-14%);
+  }
+}
+
+/* 3. Card: front → back crossfade and size reveal. Hover on desktop; the
+   "Quick look" toggle on touch. Nothing changes when there's no back image. */
+.card-back,
+.card-sizes {
+  opacity: 0;
+  transition:
+    opacity 350ms ease,
+    transform 250ms ease;
+}
+.card-sizes {
+  transform: translateY(6px);
+}
+@media (hover: hover) {
+  .card:hover .card-back,
+  .card:focus-within .card-back {
+    opacity: 1;
+  }
+  .card:hover .card-sizes,
+  .card:focus-within .card-sizes {
+    opacity: 1;
+    transform: none;
+  }
+  .card-flip {
+    display: none;
+  }
+}
+.card:has(.card-flip-input:checked) .card-back,
+.card:has(.card-flip-input:checked) .card-sizes {
+  opacity: 1;
+  transform: none;
+}
+
+/* Native <dialog> entry with @starting-style (zoom viewer). */
+dialog.viewer {
+  opacity: 0;
+  transition:
+    opacity 200ms ease,
+    overlay 200ms allow-discrete,
+    display 200ms allow-discrete;
+}
+dialog.viewer[open] {
+  opacity: 1;
+}
+@starting-style {
+  dialog.viewer[open] {
+    opacity: 0;
+  }
+}
+dialog.viewer::backdrop {
+  background: rgb(0 0 0 / 0.92);
+}
+
+/* 6. Desktop loupe. */
+.loupe img {
+  transition: transform 200ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .loupe:hover img {
+    transform: scale(2.2);
+    transform-origin: var(--zx, 50%) var(--zy, 50%);
+    cursor: zoom-in;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
