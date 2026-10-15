@@ -1,0 +1,1061 @@
+{
+  "generatedAt": "2026-10-15T12:07:59.452Z",
+  "status": "PROPOSAL — not applied. Review in report.html, then Phase 1 builds styles/tokens.css from the accepted version.",
+  "finding": "v1 is a dark theme (near-black page, coral primary, sky accent) with a light footer. Following the brief, dark stays the default and a light variant is derived from v1's own light footer colours.",
+  "v1Colours": {
+    "background": "#09090b",
+    "card": "#121216",
+    "foreground": "#f2f2f2",
+    "mutedForeground": "#a1a1aa",
+    "primary": "#ff725c",
+    "primaryForeground": "#ffffff",
+    "coralDark": "#ce4f3b",
+    "border": "#26262c",
+    "sky": "#89abe1",
+    "sand": "#0e0e11",
+    "graphite": "#f2f2f2",
+    "muted": "#212127"
+  },
+  "themes": {
+    "dark": {
+      "--bg": {
+        "value": "#09090b",
+        "oklch": "oklch(14.1% 0.004 285.8)",
+        "source": "v1 :root --background (240 10% 4%); body wrapper `.bg-background`",
+        "usage": "Page background"
+      },
+      "--surface": {
+        "value": "#121216",
+        "oklch": "oklch(18.4% 0.008 285.6)",
+        "source": "v1 :root --card (240 10% 8%); product cards, inputs",
+        "usage": "Cards, panels, inputs"
+      },
+      "--surface-2": {
+        "value": "#0d0d10",
+        "oklch": "oklch(16.0% 0.006 285.7)",
+        "source": "Proposed: OKLCH midpoint of --bg and --surface",
+        "usage": "Peg rail band, drawers"
+      },
+      "--ink": {
+        "value": "#f2f2f2",
+        "oklch": "oklch(96.1% 0.000 0.0)",
+        "source": "v1 :root --foreground (0 0% 95%)",
+        "usage": "Body text and headings"
+      },
+      "--ink-muted": {
+        "value": "#adadad",
+        "oklch": "oklch(74.8% 0.000 0.0)",
+        "source": "v1 `text-graphite/70` (foreground at 70%) on --bg, flattened to a solid colour",
+        "usage": "Secondary text, descriptions"
+      },
+      "--brand": {
+        "value": "#ff725c",
+        "oklch": "oklch(71.8% 0.176 30.9)",
+        "source": "v1 :root --primary (8 100% 68%) — coral",
+        "usage": "Primary buttons, price, links on hover, focus ring"
+      },
+      "--brand-ink": {
+        "value": "#09090b",
+        "oklch": "oklch(14.1% 0.004 285.8)",
+        "source": "v1 --background (near-black); recommended decision B",
+        "usage": "Text on --brand",
+        "changedFromV1": {
+          "from": "#ffffff",
+          "reason": "White on coral is 2.69:1 (fails AA). Near-black on coral is 7.4:1 and keeps the coral fill exactly."
+        }
+      },
+      "--brand-text": {
+        "value": "#ff725c",
+        "oklch": "oklch(71.8% 0.176 30.9)",
+        "source": "v1 --primary (passes on dark)",
+        "usage": "Brand-coloured text: price, links"
+      },
+      "--focus": {
+        "value": "#ff725c",
+        "oklch": "oklch(71.8% 0.176 30.9)",
+        "source": "v1 --ring (8 100% 68%)",
+        "usage": "Focus ring, 2px"
+      },
+      "--line": {
+        "value": "#26262c",
+        "oklch": "oklch(27.1% 0.011 285.6)",
+        "source": "v1 :root --border (240 8% 16%)",
+        "usage": "Dividers, card borders (decorative)"
+      },
+      "--line-strong": {
+        "value": "#606167",
+        "oklch": "oklch(49.4% 0.010 278.5)",
+        "source": "Derived: --line with the smallest lightness change for 3:1 on --bg and --surface",
+        "usage": "Input and select borders (WCAG 1.4.11)"
+      },
+      "--accent": {
+        "value": "#89abe1",
+        "oklch": "oklch(73.6% 0.087 259.5)",
+        "source": "v1 :root --secondary / --sky (217 60% 71%)",
+        "usage": "Kept from v1: trust-point icon tint; use sparingly"
+      },
+      "--brand-600": {
+        "value": "#ea5f4a",
+        "oklch": "oklch(66.0% 0.177 30.9)",
+        "source": "Derived: --brand lightness -6.0% (v1 hover --coral-dark #ce4f3b fails with dark text)",
+        "usage": "Hover"
+      },
+      "--brand-700": {
+        "value": "#d44b37",
+        "oklch": "oklch(59.8% 0.176 31.0)",
+        "source": "Derived: --brand lightness -12.0%",
+        "usage": "Pressed"
+      },
+      "--brand-50": {
+        "value": "#420200",
+        "oklch": "oklch(24.0% 0.095 30.4)",
+        "source": "Derived: --brand at L 24% (dark-theme tint)",
+        "usage": "Selected size, chips (background)"
+      },
+      "--brand-100": {
+        "value": "#5b0500",
+        "oklch": "oklch(30.0% 0.118 30.7)",
+        "source": "Derived: --brand at L 30% (dark-theme tint)",
+        "usage": "Highlights, hover on chips"
+      },
+      "--success": {
+        "value": "#37c265",
+        "oklch": "oklch(72.0% 0.177 150.0)",
+        "source": "Proposed: hue 150, brand L 71.8% and C 0.176",
+        "usage": "In stock, deliverable"
+      },
+      "--warning": {
+        "value": "#ce9b00",
+        "oklch": "oklch(71.8% 0.147 84.9)",
+        "source": "Proposed: hue 85, brand L 71.8% and C 0.176",
+        "usage": "Low stock"
+      },
+      "--number": {
+        "value": "#f2f2f214",
+        "oklch": "#f2f2f214 (with alpha)",
+        "source": "Proposed: --ink at 8% opacity",
+        "usage": "Ghosted shirt numbers; switch to --brand on hover"
+      }
+    },
+    "light": {
+      "--bg": {
+        "value": "#f2f2f2",
+        "oklch": "oklch(96.1% 0.000 0.0)",
+        "source": "v1 footer background (`--graphite`, 0 0% 95%)",
+        "usage": "Page background"
+      },
+      "--surface": {
+        "value": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 0.0)",
+        "source": "Proposed: white, one step above --bg",
+        "usage": "Cards, panels, inputs"
+      },
+      "--surface-2": {
+        "value": "#f8f8f8",
+        "oklch": "oklch(97.9% 0.000 0.0)",
+        "source": "Proposed: OKLCH midpoint of --bg and --surface",
+        "usage": "Peg rail band, drawers"
+      },
+      "--ink": {
+        "value": "#0e0e11",
+        "oklch": "oklch(16.5% 0.006 285.7)",
+        "source": "v1 footer text (`--sand`, 240 10% 6%)",
+        "usage": "Body text and headings"
+      },
+      "--ink-muted": {
+        "value": "#69696b",
+        "oklch": "oklch(52.1% 0.003 286.3)",
+        "source": "v1 footer `text-sand/60` on --bg, flattened",
+        "usage": "Secondary text"
+      },
+      "--brand": {
+        "value": "#ff725c",
+        "oklch": "oklch(71.8% 0.176 30.9)",
+        "source": "v1 --primary (unchanged)",
+        "usage": "Primary buttons, focus ring"
+      },
+      "--brand-ink": {
+        "value": "#09090b",
+        "oklch": "oklch(14.1% 0.004 285.8)",
+        "source": "Same as dark (decision B)",
+        "usage": "Text on --brand",
+        "changedFromV1": {
+          "from": "#ffffff",
+          "reason": "White on coral fails AA."
+        }
+      },
+      "--brand-text": {
+        "value": "#c73e2c",
+        "oklch": "oklch(56.1% 0.177 30.7)",
+        "source": "Derived: --brand with the smallest lightness change for 4.5:1 on --bg and --surface",
+        "usage": "Brand-coloured text on light",
+        "changedFromV1": {
+          "from": "#ff725c",
+          "reason": "Coral text on v1's light footer is 2.4:1."
+        }
+      },
+      "--focus": {
+        "value": "#ea5f4a",
+        "oklch": "oklch(66.0% 0.177 30.9)",
+        "source": "Derived: --brand with the smallest lightness change for 3:1 (non-text) on --bg and --surface",
+        "usage": "Focus ring"
+      },
+      "--line": {
+        "value": "#dadadb",
+        "oklch": "oklch(88.9% 0.001 286.4)",
+        "source": "v1 footer divider `border-sand/10`, flattened",
+        "usage": "Dividers (decorative)"
+      },
+      "--line-strong": {
+        "value": "#8c8c8d",
+        "oklch": "oklch(64.0% 0.001 286.4)",
+        "source": "Derived: --line with the smallest lightness change for 3:1 on --bg and --surface",
+        "usage": "Input and select borders"
+      },
+      "--accent": {
+        "value": "#89abe1",
+        "oklch": "oklch(73.6% 0.087 259.5)",
+        "source": "v1 --sky",
+        "usage": "Trust-point icon tint"
+      },
+      "--brand-600": {
+        "value": "#ea5f4a",
+        "oklch": "oklch(66.0% 0.177 30.9)",
+        "source": "Same as dark",
+        "usage": "Hover"
+      },
+      "--brand-700": {
+        "value": "#d44b37",
+        "oklch": "oklch(59.8% 0.176 31.0)",
+        "source": "Same as dark",
+        "usage": "Pressed; brand-coloured text on light"
+      },
+      "--brand-50": {
+        "value": "#fff2ef",
+        "oklch": "oklch(97.1% 0.015 33.1)",
+        "source": "Derived: --brand at L 97%",
+        "usage": "Selected size, chips"
+      },
+      "--brand-100": {
+        "value": "#ffe0da",
+        "oklch": "oklch(93.1% 0.035 30.7)",
+        "source": "Derived: --brand at L 93%",
+        "usage": "Highlights"
+      },
+      "--success": {
+        "value": "#008039",
+        "oklch": "oklch(52.4% 0.144 150.0)",
+        "source": "Proposed: dark-theme --success with the smallest lightness change for 4.5:1 on --bg and --surface",
+        "usage": "In stock"
+      },
+      "--warning": {
+        "value": "#8d6900",
+        "oklch": "oklch(54.3% 0.111 84.8)",
+        "source": "Proposed: dark-theme --warning with the smallest lightness change for 4.5:1 on --bg and --surface",
+        "usage": "Low stock"
+      },
+      "--number": {
+        "value": "#0e0e1114",
+        "oklch": "#0e0e1114 (with alpha)",
+        "source": "Proposed: --ink at 8% opacity",
+        "usage": "Ghosted shirt numbers"
+      }
+    }
+  },
+  "contrast": {
+    "checks": [
+      {
+        "theme": "dark",
+        "pair": "--ink on --bg",
+        "fg": "#f2f2f2",
+        "bg": "#09090b",
+        "ratio": 17.77,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink on --surface",
+        "fg": "#f2f2f2",
+        "bg": "#121216",
+        "ratio": 16.69,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink on --surface-2",
+        "fg": "#f2f2f2",
+        "bg": "#0d0d10",
+        "ratio": 17.33,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink-muted on --bg",
+        "fg": "#adadad",
+        "bg": "#09090b",
+        "ratio": 8.87,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink-muted on --surface",
+        "fg": "#adadad",
+        "bg": "#121216",
+        "ratio": 8.33,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-text on --bg",
+        "fg": "#ff725c",
+        "bg": "#09090b",
+        "ratio": 7.4,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-text on --surface",
+        "fg": "#ff725c",
+        "bg": "#121216",
+        "ratio": 6.95,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-ink on --brand",
+        "fg": "#09090b",
+        "bg": "#ff725c",
+        "ratio": 7.4,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-ink on --brand-600",
+        "fg": "#09090b",
+        "bg": "#ea5f4a",
+        "ratio": 5.91,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-ink on --brand-700",
+        "fg": "#09090b",
+        "bg": "#d44b37",
+        "ratio": 4.61,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink on --brand-50",
+        "fg": "#f2f2f2",
+        "bg": "#420200",
+        "ratio": 15.12,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--ink on --brand-100",
+        "fg": "#f2f2f2",
+        "bg": "#5b0500",
+        "ratio": 12.79,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--brand-text on --brand-50",
+        "fg": "#ff725c",
+        "bg": "#420200",
+        "ratio": 6.3,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--success on --surface",
+        "fg": "#37c265",
+        "bg": "#121216",
+        "ratio": 8.07,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--success on --bg",
+        "fg": "#37c265",
+        "bg": "#09090b",
+        "ratio": 8.59,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--warning on --surface",
+        "fg": "#ce9b00",
+        "bg": "#121216",
+        "ratio": 7.4,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--warning on --bg",
+        "fg": "#ce9b00",
+        "bg": "#09090b",
+        "ratio": 7.88,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--focus on --bg",
+        "fg": "#ff725c",
+        "bg": "#09090b",
+        "ratio": 7.4,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--focus on --surface",
+        "fg": "#ff725c",
+        "bg": "#121216",
+        "ratio": 6.95,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--line-strong on --bg",
+        "fg": "#606167",
+        "bg": "#09090b",
+        "ratio": 3.22,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--line-strong on --surface",
+        "fg": "#606167",
+        "bg": "#121216",
+        "ratio": 3.03,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--line on --bg",
+        "fg": "#26262c",
+        "bg": "#09090b",
+        "ratio": 1.32,
+        "required": 1,
+        "kind": "decorative",
+        "pass": true
+      },
+      {
+        "theme": "dark",
+        "pair": "--accent on --bg",
+        "fg": "#89abe1",
+        "bg": "#09090b",
+        "ratio": 8.5,
+        "required": 1,
+        "kind": "decorative",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink on --bg",
+        "fg": "#0e0e11",
+        "bg": "#f2f2f2",
+        "ratio": 17.22,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink on --surface",
+        "fg": "#0e0e11",
+        "bg": "#ffffff",
+        "ratio": 19.27,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink on --surface-2",
+        "fg": "#0e0e11",
+        "bg": "#f8f8f8",
+        "ratio": 18.15,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink-muted on --bg",
+        "fg": "#69696b",
+        "bg": "#f2f2f2",
+        "ratio": 4.89,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink-muted on --surface",
+        "fg": "#69696b",
+        "bg": "#ffffff",
+        "ratio": 5.48,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-text on --bg",
+        "fg": "#c73e2c",
+        "bg": "#f2f2f2",
+        "ratio": 4.52,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-text on --surface",
+        "fg": "#c73e2c",
+        "bg": "#ffffff",
+        "ratio": 5.06,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-ink on --brand",
+        "fg": "#09090b",
+        "bg": "#ff725c",
+        "ratio": 7.4,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-ink on --brand-600",
+        "fg": "#09090b",
+        "bg": "#ea5f4a",
+        "ratio": 5.91,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-ink on --brand-700",
+        "fg": "#09090b",
+        "bg": "#d44b37",
+        "ratio": 4.61,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink on --brand-50",
+        "fg": "#0e0e11",
+        "bg": "#fff2ef",
+        "ratio": 17.62,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--ink on --brand-100",
+        "fg": "#0e0e11",
+        "bg": "#ffe0da",
+        "ratio": 15.53,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--brand-text on --brand-50",
+        "fg": "#c73e2c",
+        "bg": "#fff2ef",
+        "ratio": 4.62,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--success on --surface",
+        "fg": "#008039",
+        "bg": "#ffffff",
+        "ratio": 5.06,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--success on --bg",
+        "fg": "#008039",
+        "bg": "#f2f2f2",
+        "ratio": 4.52,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--warning on --surface",
+        "fg": "#8d6900",
+        "bg": "#ffffff",
+        "ratio": 5.06,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--warning on --bg",
+        "fg": "#8d6900",
+        "bg": "#f2f2f2",
+        "ratio": 4.52,
+        "required": 4.5,
+        "kind": "text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--focus on --bg",
+        "fg": "#ea5f4a",
+        "bg": "#f2f2f2",
+        "ratio": 3.01,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--focus on --surface",
+        "fg": "#ea5f4a",
+        "bg": "#ffffff",
+        "ratio": 3.37,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--line-strong on --bg",
+        "fg": "#8c8c8d",
+        "bg": "#f2f2f2",
+        "ratio": 3,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--line-strong on --surface",
+        "fg": "#8c8c8d",
+        "bg": "#ffffff",
+        "ratio": 3.36,
+        "required": 3,
+        "kind": "non-text",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--line on --bg",
+        "fg": "#dadadb",
+        "bg": "#f2f2f2",
+        "ratio": 1.25,
+        "required": 1,
+        "kind": "decorative",
+        "pass": true
+      },
+      {
+        "theme": "light",
+        "pair": "--accent on --bg",
+        "fg": "#89abe1",
+        "bg": "#f2f2f2",
+        "ratio": 2.09,
+        "required": 1,
+        "kind": "decorative",
+        "pass": true
+      }
+    ],
+    "v1AsShipped": [
+      {
+        "label": "Body text (foreground on background)",
+        "fg": "#f2f2f2",
+        "bg": "#09090b",
+        "required": 4.5,
+        "ratio": 17.77,
+        "pass": true
+      },
+      {
+        "label": "Secondary text (foreground/70 on background)",
+        "fg": "#adadad",
+        "bg": "#09090b",
+        "required": 4.5,
+        "ratio": 8.87,
+        "pass": true
+      },
+      {
+        "label": "Card labels: club, SKU (foreground/40, 10–12px mono)",
+        "fg": "#666667",
+        "bg": "#121216",
+        "required": 4.5,
+        "ratio": 3.26,
+        "pass": false
+      },
+      {
+        "label": "Primary button: white on coral",
+        "fg": "#ffffff",
+        "bg": "#ff725c",
+        "required": 4.5,
+        "ratio": 2.69,
+        "pass": false
+      },
+      {
+        "label": "Primary button hover: white on coral-dark",
+        "fg": "#ffffff",
+        "bg": "#ce4f3b",
+        "required": 4.5,
+        "ratio": 4.37,
+        "pass": false
+      },
+      {
+        "label": "Price: coral on background",
+        "fg": "#ff725c",
+        "bg": "#09090b",
+        "required": 4.5,
+        "ratio": 7.4,
+        "pass": true
+      },
+      {
+        "label": "Footer text: sand/60 on graphite",
+        "fg": "#69696b",
+        "bg": "#f2f2f2",
+        "required": 4.5,
+        "ratio": 4.89,
+        "pass": true
+      },
+      {
+        "label": "Footer icons and hover: coral on graphite",
+        "fg": "#ff725c",
+        "bg": "#f2f2f2",
+        "required": 3,
+        "ratio": 2.4,
+        "pass": false
+      },
+      {
+        "label": "Card borders: border on background (non-text)",
+        "fg": "#26262c",
+        "bg": "#09090b",
+        "required": 3,
+        "ratio": 1.32,
+        "pass": false
+      },
+      {
+        "label": "In stock: green-700 on background",
+        "fg": "#15803d",
+        "bg": "#09090b",
+        "required": 4.5,
+        "ratio": 3.97,
+        "pass": false
+      }
+    ]
+  },
+  "decisionsNeeded": [
+    {
+      "id": "brand-ink",
+      "question": "White text on coral fails AA. Pick one:",
+      "options": [
+        {
+          "label": "A — smallest lightness change: darken the button fill",
+          "detail": "Button fill becomes #d14734 (ΔL -0.130), white text stays. Coral remains for price, links and the focus ring on dark. Hover/pressed would then go darker from there."
+        },
+        {
+          "label": "B — keep v1 coral fill exactly, switch button text to near-black",
+          "detail": "--brand-ink #ffffff → #09090b: 7.40:1. Larger lightness change to the text colour, but the coral button — v1's most recognisable element — is unchanged."
+        }
+      ],
+      "recommendation": "B",
+      "applied": "B is applied in the proposed values above; switching to A changes --brand-ink, --brand-600 and --brand-700 only."
+    }
+  ],
+  "typeScale": {
+    "base": 17,
+    "ratio": 1.25,
+    "steps": {
+      "0": {
+        "px": 17,
+        "use": "Body, buttons, inputs"
+      },
+      "1": {
+        "px": 21.25,
+        "use": "h4, lead paragraph"
+      },
+      "2": {
+        "px": 26.56,
+        "use": "h3, card titles at desktop"
+      },
+      "3": {
+        "px": 33.2,
+        "use": "h2 on mobile"
+      },
+      "4": {
+        "px": 41.5,
+        "use": "h2 desktop, h1 mobile"
+      },
+      "5": {
+        "px": 51.88,
+        "use": "h1 desktop, hero on mobile"
+      },
+      "6": {
+        "px": 64.85,
+        "use": "Hero on desktop (“Wear the heritage.”)"
+      },
+      "-2": {
+        "px": 10.88,
+        "use": "Fine print (floor at 12px)"
+      },
+      "-1": {
+        "px": 13.6,
+        "use": "Small text, labels, SKU, captions"
+      }
+    },
+    "families": {
+      "heading": {
+        "family": "Outfit",
+        "weights": [
+          600,
+          700,
+          800
+        ],
+        "source": "v1 --font-heading / --font-display (Google Fonts) → self-host via next/font"
+      },
+      "body": {
+        "family": "Inter",
+        "weights": [
+          400,
+          500,
+          600
+        ],
+        "source": "v1 --font-body (Google Fonts) → self-host via next/font"
+      },
+      "mono": {
+        "family": "JetBrains Mono",
+        "weights": [
+          400,
+          600
+        ],
+        "source": "v1 --font-mono: price, SKU, small labels"
+      },
+      "numbers": {
+        "family": "Big Shoulders Display",
+        "weights": [
+          800,
+          900
+        ],
+        "source": "New (Kit Room): shirt numbers and peg rail only",
+        "size": "clamp(6rem, 14vw, 14rem)",
+        "tracking": "-0.02em"
+      }
+    },
+    "lineHeights": {
+      "body": 1.6,
+      "heading": 1.1,
+      "display": 1.02
+    },
+    "measure": "≤ 70ch for body copy",
+    "casing": "Sentence case everywhere. v1's uppercase mono labels (club, CURATED, SHOP) become sentence case."
+  },
+  "v1Type": {
+    "h1": {
+      "page": "home",
+      "selector": "section.relative.min-h-\\[88vh\\].flex > div.relative.max-w-7xl.mx-auto > div.max-w-2xl.animate-fade-up > h1.font-heading.font-extrabold.text-graphite",
+      "family": "Outfit",
+      "weight": "800",
+      "sizeDesktop": "72px",
+      "sizeMobile": "48px",
+      "lineHeight": "72px",
+      "letterSpacing": "-1.44px",
+      "transform": "none"
+    },
+    "h2": {
+      "page": "home",
+      "selector": "section.max-w-7xl.mx-auto.px-4 > div.flex.items-end.justify-between > div > h2.font-heading.font-bold.text-3xl",
+      "family": "Outfit",
+      "weight": "700",
+      "sizeDesktop": "36px",
+      "sizeMobile": "30px",
+      "lineHeight": "40px",
+      "letterSpacing": "-0.72px",
+      "transform": "none"
+    },
+    "h3": {
+      "page": "home",
+      "selector": "div.grid.grid-cols-1.md\\:grid-cols-3 > a.group.relative.h-64 > div.absolute.inset-0.flex > h3.font-heading.font-bold.text-3xl",
+      "family": "Outfit",
+      "weight": "700",
+      "sizeDesktop": "30px",
+      "sizeMobile": "30px",
+      "lineHeight": "36px",
+      "letterSpacing": "-0.6px",
+      "transform": "none"
+    },
+    "h4": {
+      "page": "home",
+      "selector": "div.max-w-7xl.mx-auto.px-4 > div.flex.items-start.gap-4 > div > h4.font-heading.font-semibold.text-graphite",
+      "family": "Outfit",
+      "weight": "600",
+      "sizeDesktop": "16px",
+      "sizeMobile": "16px",
+      "lineHeight": "24px",
+      "letterSpacing": "-0.32px",
+      "transform": "none"
+    },
+    "text.body": {
+      "page": "home",
+      "selector": "section.relative.min-h-\\[88vh\\].flex > div.relative.max-w-7xl.mx-auto > div.max-w-2xl.animate-fade-up > p.mt-6.text-lg.text-graphite\\/70",
+      "family": "Inter",
+      "weight": "400",
+      "sizeDesktop": "18px",
+      "sizeMobile": "18px",
+      "lineHeight": "29.25px",
+      "letterSpacing": "normal",
+      "transform": "none"
+    },
+    "text.muted": {
+      "page": "home",
+      "selector": "section.relative.min-h-\\[88vh\\].flex > div.relative.max-w-7xl.mx-auto > div.max-w-2xl.animate-fade-up > span.inline-flex.items-center.gap-2",
+      "family": "JetBrains Mono",
+      "weight": "400",
+      "sizeDesktop": "12px",
+      "sizeMobile": "12px",
+      "lineHeight": "16px",
+      "letterSpacing": "normal",
+      "transform": "uppercase"
+    },
+    "text.small": {
+      "page": "home",
+      "selector": "section.relative.min-h-\\[88vh\\].flex > div.relative.max-w-7xl.mx-auto > div.max-w-2xl.animate-fade-up > span.inline-flex.items-center.gap-2",
+      "family": "JetBrains Mono",
+      "weight": "400",
+      "sizeDesktop": "12px",
+      "sizeMobile": "12px",
+      "lineHeight": "16px",
+      "letterSpacing": "normal",
+      "transform": "uppercase"
+    },
+    "eyebrow": {
+      "page": "home",
+      "selector": "div.max-w-7xl.mx-auto.px-4 > div.flex.items-center.justify-between > a.flex.items-center.gap-2 > span.font-heading.font-bold.text-lg",
+      "family": "Outfit",
+      "weight": "700",
+      "sizeDesktop": "20px",
+      "sizeMobile": "18px",
+      "lineHeight": "28px",
+      "letterSpacing": "-0.5px",
+      "transform": "none"
+    },
+    "button.primary": {
+      "page": "home",
+      "selector": "div.relative.max-w-7xl.mx-auto > div.max-w-2xl.animate-fade-up > div.mt-8.flex.flex-wrap > a.inline-flex.items-center.gap-2",
+      "family": "Inter",
+      "weight": "600",
+      "sizeDesktop": "16px",
+      "sizeMobile": "16px",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "transform": "none"
+    },
+    "nav.link": {
+      "page": "home",
+      "selector": "div.max-w-7xl.mx-auto.px-4 > div.flex.items-center.justify-between > nav.hidden.lg\\:flex.items-center > a.text-sm.font-medium.text-graphite\\/70",
+      "family": "Inter",
+      "weight": "500",
+      "sizeDesktop": "14px",
+      "sizeMobile": null,
+      "lineHeight": "20px",
+      "letterSpacing": "normal",
+      "transform": "none"
+    },
+    "price": {
+      "page": "home",
+      "selector": "div.relative.overflow-hidden.rounded-2xl > div.p-4 > div.flex.items-center.justify-between > span.font-mono-tech.font-semibold.text-coral",
+      "family": "JetBrains Mono",
+      "weight": "600",
+      "sizeDesktop": "18px",
+      "sizeMobile": "18px",
+      "lineHeight": "28px",
+      "letterSpacing": "normal",
+      "transform": "none"
+    },
+    "sku": {
+      "page": "home",
+      "selector": "div.relative.overflow-hidden.rounded-2xl > div.p-4 > div.flex.items-center.justify-between > span.text-\\[10px\\].font-mono-tech.text-graphite\\/40",
+      "family": "JetBrains Mono",
+      "weight": "400",
+      "sizeDesktop": "10px",
+      "sizeMobile": "10px",
+      "lineHeight": "15px",
+      "letterSpacing": "normal",
+      "transform": "uppercase"
+    },
+    "footer.heading": null
+  },
+  "shape": {
+    "radius": {
+      "input": "12px (v1 --radius .75rem)",
+      "card": "16px (v1 rounded-2xl)",
+      "pill": "9999px (v1 buttons, sizes, chips)"
+    },
+    "container": "1280px max (v1 max-w-7xl) with 16/24/32px gutters",
+    "sectionSpacing": "80px desktop (v1 py-20), 56px mobile",
+    "focusRing": "2px solid --brand, 2px offset (v1 has none beyond browser default, except inputs)"
+  }
+}

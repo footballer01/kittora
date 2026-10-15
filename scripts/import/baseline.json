@@ -1,0 +1,1006 @@
+{
+  "source": "https://terrace-archive-kit.base44.app",
+  "measuredAt": "2026-10-15T12:04:20.795Z",
+  "notes": [
+    "Lighthouse uses its default mobile emulation (Moto G Power, simulated slow 4G) via Chrome for Testing. Each page is run 3 times; the median-performance run is reported, with the range.",
+    "axe runs WCAG 2.0/2.1/2.2 A and AA rules plus best practices, at 390px and 1440px."
+  ],
+  "lighthouse": [
+    {
+      "page": "home",
+      "url": "https://terrace-archive-kit.base44.app/",
+      "formFactor": "mobile",
+      "runs": 3,
+      "performanceRange": [
+        69,
+        73
+      ],
+      "lighthouseVersion": "13.5.0",
+      "scores": {
+        "performance": 70,
+        "accessibility": 90,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 6286,
+        "cls": 0,
+        "fcpMs": 3377,
+        "tbtMs": 16,
+        "speedIndexMs": 3377
+      },
+      "weight": {
+        "jsTransferKB": 296,
+        "jsRequests": 2,
+        "totalTransferKB": 1036,
+        "totalRequests": 36
+      },
+      "failedAudits": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.38,
+          "displayValue": "3.4 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.1,
+          "displayValue": "6.3 s"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.61,
+          "displayValue": "6.3 s"
+        },
+        {
+          "id": "color-contrast",
+          "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "heading-order",
+          "title": "Heading elements are not in a sequentially-descending order",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "link-name",
+          "title": "Links do not have a discernible name",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 11 KiB"
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 75 KiB"
+        },
+        {
+          "id": "agent-accessibility-tree",
+          "title": "Accessibility tree is not well-formed",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0,
+          "displayValue": "Est savings of 170 KiB"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "score": 0,
+          "displayValue": "Est savings of 136 KiB"
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 1,600 ms"
+        }
+      ]
+    },
+    {
+      "page": "category",
+      "url": "https://terrace-archive-kit.base44.app/category/all",
+      "formFactor": "mobile",
+      "runs": 3,
+      "performanceRange": [
+        69,
+        70
+      ],
+      "lighthouseVersion": "13.5.0",
+      "scores": {
+        "performance": 69,
+        "accessibility": 86,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 7252,
+        "cls": 0,
+        "fcpMs": 3351,
+        "tbtMs": 21,
+        "speedIndexMs": 3351
+      },
+      "weight": {
+        "jsTransferKB": 296,
+        "jsRequests": 2,
+        "totalTransferKB": 1060,
+        "totalRequests": 44
+      },
+      "failedAudits": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.39,
+          "displayValue": "3.4 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.05,
+          "displayValue": "7.3 s"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.5,
+          "displayValue": "7.3 s"
+        },
+        {
+          "id": "color-contrast",
+          "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "heading-order",
+          "title": "Heading elements are not in a sequentially-descending order",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "link-name",
+          "title": "Links do not have a discernible name",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "select-name",
+          "title": "Select elements do not have associated label elements.",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 11 KiB"
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 76 KiB"
+        },
+        {
+          "id": "agent-accessibility-tree",
+          "title": "Accessibility tree is not well-formed",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0,
+          "displayValue": "Est savings of 170 KiB"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "score": 0.5,
+          "displayValue": "Est savings of 10 KiB"
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 1,590 ms"
+        }
+      ]
+    },
+    {
+      "page": "product",
+      "url": "https://terrace-archive-kit.base44.app/product/6ace0c3a3becfe14cb06a7b9",
+      "formFactor": "mobile",
+      "runs": 3,
+      "performanceRange": [
+        66,
+        70
+      ],
+      "lighthouseVersion": "13.5.0",
+      "scores": {
+        "performance": 69,
+        "accessibility": 84,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 6285,
+        "cls": 0,
+        "fcpMs": 3661,
+        "tbtMs": 29,
+        "speedIndexMs": 3726
+      },
+      "weight": {
+        "jsTransferKB": 296,
+        "jsRequests": 2,
+        "totalTransferKB": 557,
+        "totalRequests": 20
+      },
+      "failedAudits": [
+        {
+          "id": "first-contentful-paint",
+          "title": "First Contentful Paint",
+          "score": 0.3,
+          "displayValue": "3.7 s"
+        },
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "score": 0.1,
+          "displayValue": "6.3 s"
+        },
+        {
+          "id": "speed-index",
+          "title": "Speed Index",
+          "score": 0.85,
+          "displayValue": "3.7 s"
+        },
+        {
+          "id": "interactive",
+          "title": "Time to Interactive",
+          "score": 0.61,
+          "displayValue": "6.3 s"
+        },
+        {
+          "id": "button-name",
+          "title": "Buttons do not have an accessible name",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "color-contrast",
+          "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "heading-order",
+          "title": "Heading elements are not in a sequentially-descending order",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "link-name",
+          "title": "Links do not have a discernible name",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "score": 0,
+          "displayValue": "Est savings of 11 KiB"
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "score": 0,
+          "displayValue": "Est savings of 76 KiB"
+        },
+        {
+          "id": "agent-accessibility-tree",
+          "title": "Accessibility tree is not well-formed",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "cache-insight",
+          "title": "Use efficient cache lifetimes",
+          "score": 0,
+          "displayValue": "Est savings of 170 KiB"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "score": 0.5,
+          "displayValue": "Est savings of 43 KiB"
+        },
+        {
+          "id": "lcp-discovery-insight",
+          "title": "LCP request discovery",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree",
+          "score": 0,
+          "displayValue": null
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render-blocking requests",
+          "score": 0,
+          "displayValue": "Est savings of 1,890 ms"
+        }
+      ]
+    }
+  ],
+  "axe": [
+    {
+      "page": "home",
+      "viewport": "mobile",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 20,
+          "examples": [
+            {
+              "target": ".hover\\:bg-coral-dark",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 2.68 (foreground color: #ffffff, background color: #ff725c, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".mb-2",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .group-hover\\:shadow-xl.group-hover\\:-translate-y-1.bg-white > .p-4 > .mb-1.tracking-wider.text-\\[10px\\]",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": ".h-64.bg-gradient-to-br.from-sky\\/30:nth-child(1) > .justify-end.p-7.flex-col > .text-3xl.font-bold",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "category",
+      "viewport": "mobile",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 29,
+          "examples": [
+            {
+              "target": ".mb-2",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > .mb-1.tracking-wider",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > .mt-3.justify-between.items-center > .text-\\[10px\\].text-graphite\\/40.uppercase",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > h3",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/select-name?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": "select",
+              "summary": "Fix any of the following:   Element does not have an implicit (wrapped) <label>   Element does not have an explicit <label>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "product",
+      "viewport": "mobile",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": ".p-3:nth-child(1)",
+              "summary": "Fix any of the following:   Element does not have inner text that is visible to screen readers   aria-label attribute does not exist or is empty"
+            },
+            {
+              "target": ".p-3:nth-child(3)",
+              "summary": "Fix any of the following:   Element does not have inner text that is visible to screen readers   aria-label attribute does not exist or is empty"
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 9,
+          "examples": [
+            {
+              "target": ".text-xs.mb-2.tracking-wider",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".items-baseline > .text-xs.text-graphite\\/40.font-mono-tech",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".text-green-700",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.96 (foreground color: #15803d, background color: #09090b, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": "div:nth-child(2) > h4",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "viewport": "desktop",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 20,
+          "examples": [
+            {
+              "target": ".hover\\:bg-coral-dark",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 2.68 (foreground color: #ffffff, background color: #ff725c, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".mb-2",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .group-hover\\:shadow-xl.group-hover\\:-translate-y-1.bg-white > .p-4 > .mb-1.tracking-wider.text-\\[10px\\]",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": ".h-64.bg-gradient-to-br.from-sky\\/30:nth-child(1) > .justify-end.p-7.flex-col > .text-3xl.font-bold",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "category",
+      "viewport": "desktop",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 29,
+          "examples": [
+            {
+              "target": ".mb-2",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > .mb-1.tracking-wider",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > .mt-3.justify-between.items-center > .text-\\[10px\\].text-graphite\\/40.uppercase",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.56 (foreground color: #6c6c6e, background color: #121216, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": ".block.animate-fade-up.group:nth-child(1) > .rounded-2xl.border-border\\/60.group-hover\\:shadow-xl > .p-4 > h3",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/select-name?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": "select",
+              "summary": "Fix any of the following:   Element does not have an implicit (wrapped) <label>   Element does not have an explicit <label>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "product",
+      "viewport": "desktop",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": ".p-3:nth-child(1)",
+              "summary": "Fix any of the following:   Element does not have inner text that is visible to screen readers   aria-label attribute does not exist or is empty"
+            },
+            {
+              "target": ".p-3:nth-child(3)",
+              "summary": "Fix any of the following:   Element does not have inner text that is visible to screen readers   aria-label attribute does not exist or is empty"
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "count": 9,
+          "examples": [
+            {
+              "target": ".text-xs.mb-2.tracking-wider",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".items-baseline > .text-xs.text-graphite\\/40.font-mono-tech",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.46 (foreground color: #666667, background color: #09090b, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ".text-green-700",
+              "summary": "Fix any of the following:   Element has insufficient color contrast of 3.96 (foreground color: #15803d, background color: #09090b, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "count": 1,
+          "examples": [
+            {
+              "target": "div:nth-child(2) > h4",
+              "summary": "Fix any of the following:   Heading order invalid"
+            }
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+          "count": 3,
+          "examples": [
+            {
+              "target": "a[href$=\"instagram.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"twitter.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            },
+            {
+              "target": "a[href$=\"facebook.com\"]",
+              "summary": "Fix all of the following:   Element is in tab order and does not have accessible text "
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "count": 2,
+          "examples": [
+            {
+              "target": "img[alt=\"base44\"]",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            },
+            {
+              "target": "#base44-edit-badge > span",
+              "summary": "Fix any of the following:   Some page content is not contained by landmarks"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designAudit": [
+    {
+      "area": "Product imagery",
+      "severity": "high",
+      "observation": "Every product photo is a ~600×380 landscape shot (front and back side by side) shown in a 4:5 portrait frame with object-cover, so both shirts are cropped at the edges and upscaled ~2× on retina screens.",
+      "screenshots": [
+        "product-1440.png",
+        "home-1440.png",
+        "category-390.png"
+      ]
+    },
+    {
+      "area": "Contrast",
+      "severity": "high",
+      "observation": "The secondary hero button (“Explore Men”) is white text on a translucent white pill over the hero photo — it reads as a disabled grey button and fails AA. Tiny 10px uppercase mono labels (club name on cards) sit at 40% opacity on near-black.",
+      "screenshots": [
+        "home-1440.png",
+        "home-390.png"
+      ]
+    },
+    {
+      "area": "Theme consistency",
+      "severity": "medium",
+      "observation": "The site is dark everywhere except a light footer, which reads as a different site bolted on. The CSS variables are a light theme with names swapped (`--sand` is near-black, `--graphite` is near-white), so colour names in code are misleading.",
+      "screenshots": [
+        "home-1440.png",
+        "product-1440.png"
+      ]
+    },
+    {
+      "area": "Hierarchy",
+      "severity": "medium",
+      "observation": "Category tiles are three identical empty dark gradient panels with no imagery; on mobile they take a full screen before any product appears. Women and Kids tiles lead to empty pages (“No jerseys found.”).",
+      "screenshots": [
+        "home-390.png",
+        "home-1440.png"
+      ]
+    },
+    {
+      "area": "Mobile layout",
+      "severity": "medium",
+      "observation": "On 390px product cards the SKU wraps into the price line (“₹900 KTR-RMA-GRN-” / “MBP10”); names truncate with ellipses (“Arsenal Red & White Saka #7…”). The hero subline sits directly on a busy photo.",
+      "screenshots": [
+        "home-390.png",
+        "category-390.png"
+      ]
+    },
+    {
+      "area": "Product page",
+      "severity": "medium",
+      "observation": "One image, no gallery or zoom. Detail block repeats “Fit: Men” and “Category: Men”. No size guide, delivery estimate or related products. Quantity stepper buttons have no accessible names.",
+      "screenshots": [
+        "product-1440.png",
+        "product-390.png"
+      ]
+    },
+    {
+      "area": "Radius and spacing",
+      "severity": "low",
+      "observation": "Radius varies by component: 16px cards, fully round pills for buttons and sizes, 12px inputs. Section spacing is consistent (80px) but the trust strip and footer use different horizontal rhythm from the content above.",
+      "screenshots": [
+        "home-1440.png"
+      ]
+    },
+    {
+      "area": "Missing states",
+      "severity": "medium",
+      "observation": "No visible keyboard focus style on nav links, cards or size buttons beyond the browser default; hover only changes text colour to coral. Empty states exist (cart, orders, category) but offer no next step beyond one link. No error states seen.",
+      "screenshots": [
+        "cart-1440.png",
+        "category-1440.png"
+      ]
+    },
+    {
+      "area": "Dead and placeholder links",
+      "severity": "high",
+      "observation": "“Returns” and “Size Guide” in the footer both go to /contact. Footer phone is the literal placeholder “+91 XXXXX XXXXX” (the contact page shows a real number). Instagram, Twitter and Facebook icons link to the bare platform home pages. Header icon links (orders, cart, contact) have no text labels.",
+      "screenshots": [
+        "home-1440.png",
+        "contact-1440.png"
+      ]
+    },
+    {
+      "area": "Platform chrome",
+      "severity": "low",
+      "observation": "A floating “Edit with Base44” badge overlaps product content and the category tiles on every page.",
+      "screenshots": [
+        "product-1440.png",
+        "home-390.png"
+      ]
+    },
+    {
+      "area": "Payment and trust copy",
+      "severity": "low",
+      "observation": "Footer says “Secured payments via Razorpay · UPI · Cards · Net Banking”; v2 uses UPI only, so this line must change. Trust points promise “Authenticated Craft” and “Seven-day hassle-free returns” but there is no returns page to back them.",
+      "screenshots": [
+        "home-1440.png"
+      ]
+    }
+  ]
+}
