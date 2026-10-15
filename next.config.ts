@@ -1,9 +1,14 @@
 import type { NextConfig } from "next";
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
+// Fully static site: `next build` writes plain HTML/JS/CSS to `out/`, served by
+// Cloudflare static assets. No server code runs anywhere but Supabase.
 const nextConfig: NextConfig = {
-  // cacheComponents / partialPrefetching are off: Cache Components hang in the
-  // Workers runtime (setTimeout semantics) under @opennextjs/cloudflare 1.20.
+  output: "export",
+  images: {
+    // Phase 2 swaps this for a custom loader that picks pre-sized WebP files
+    // generated at upload time (no paid image service).
+    unoptimized: true,
+  },
   turbopack: {
     rules: {
       "*.css": {
@@ -15,6 +20,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-// Gives `next dev` access to Cloudflare bindings via getCloudflareContext().
-initOpenNextCloudflareForDev();

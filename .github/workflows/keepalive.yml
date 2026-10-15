@@ -1,7 +1,8 @@
 name: Keep Supabase awake
 
 # Free Supabase projects pause after a week without activity. Run one real
-# query against each project daily, and ping the live site's health route.
+# query against each project daily. Customer traffic also counts as activity;
+# this is the backup for quiet weeks.
 on:
   schedule:
     - cron: "17 3 * * *" # 08:47 IST
@@ -24,6 +25,6 @@ jobs:
       - name: Query staging database
         if: ${{ env.STAGING_DATABASE_URL != '' }}
         run: psql "$STAGING_DATABASE_URL" -tAc "select 1"
-      - name: Ping live site
+      - name: Check live site is up
         if: ${{ env.SITE_URL != '' }}
-        run: curl -fsS --max-time 20 "$SITE_URL/api/health"
+        run: curl -fsS --max-time 20 -o /dev/null "$SITE_URL/"

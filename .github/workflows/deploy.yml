@@ -1,18 +1,25 @@
 name: Deploy
 
-# Deploys main to Cloudflare Workers (workers.dev). Off until the repo
-# variable DEPLOY_ENABLED is set to "true" — see README "Deploying".
+# Builds the static site (catalogue pre-rendered from live Supabase data) and
+# uploads it to Cloudflare. Runs on every push to main, and on demand from the
+# admin "Publish changes" button, which calls a Supabase Edge Function that
+# dispatches this workflow. Off until the repo variable DEPLOY_ENABLED is "true".
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      reason:
+        description: Why this deploy was triggered
+        required: false
+        default: manual
 
 permissions:
   contents: read
 
 concurrency:
   group: deploy
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,7 +30,6 @@ jobs:
       NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
       NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      NEXT_PUBLIC_RAZORPAY_KEY_ID: ${{ vars.NEXT_PUBLIC_RAZORPAY_KEY_ID }}
       NEXT_PUBLIC_CF_ANALYTICS_TOKEN: ${{ vars.NEXT_PUBLIC_CF_ANALYTICS_TOKEN }}
     steps:
       - uses: actions/checkout@v5
@@ -32,9 +38,8 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run build:worker
-      - run: npm run size:check
-      - run: npx opennextjs-cloudflare deploy
+      - run: npm run build
+      - run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -14,7 +14,8 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
   ],
   webServer: {
-    command: `npm run build && npx next start -p ${port}`,
+    // Serve the static export exactly as Cloudflare will.
+    command: `npm run build && npx wrangler dev --port ${port}`,
     port,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,

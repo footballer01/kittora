@@ -7,8 +7,8 @@ export default defineConfig({
   schema: "./lib/db/schema.ts",
   out: "./drizzle",
   dialect: "postgresql",
-  // Migrations use the direct/session connection, not the transaction pooler.
-  dbCredentials: { url: process.env.DATABASE_URL_DIRECT ?? process.env.DATABASE_URL! },
+  // Session pooler (port 5432). Run from a developer machine or CI only.
+  dbCredentials: { url: process.env.DATABASE_URL_DIRECT! },
   strict: true,
   verbose: true,
 });

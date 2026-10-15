@@ -1,12 +1,12 @@
+// Assets-only deploy: Cloudflare serves the static export in `out/`.
+// There is no Worker script, so there's no CPU or bundle-size budget to manage.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kittora",
-  "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "observability": { "enabled": true }
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
 }
