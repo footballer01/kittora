@@ -1,18 +1,139 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-/* Placeholder tokens. Phase 1 replaces these with values from scripts/import/theme.json. */
-:root {
-  --bg: #ffffff;
-  --ink: #171717;
-}
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-text: var(--brand-text);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-focus: var(--focus);
+  --color-number: var(--number);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-number: var(--font-big-shoulders), var(--font-outfit), sans-serif;
+
+  --text-step-n2: var(--step-n2);
+  --text-step-n1: var(--step-n1);
+  --text-step-0: var(--step-0);
+  --text-step-1: var(--step-1);
+  --text-step-2: var(--step-2);
+  --text-step-3: var(--step-3);
+  --text-step-4: var(--step-4);
+  --text-step-5: var(--step-5);
+  --text-step-6: var(--step-6);
+
+  --radius-input: var(--radius-input);
+  --radius-card: var(--radius-card);
+
+  --animate-hang: hang 520ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  --animate-toast-in: toast-in 200ms ease-out both;
+  --animate-drawer-in: drawer-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-drawer-out: drawer-out 180ms ease-in both;
+  --animate-fade-in: fade-in 200ms ease-out both;
+  --animate-fade-out: fade-out 160ms ease-in both;
 }
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, sans-serif;
+@keyframes hang {
+  from {
+    transform: rotate(-7deg) translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes toast-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes drawer-out {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  /* Themed subtrees (e.g. light previews) paint their own background. */
+  [data-theme] {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--brand);
+    color: var(--brand-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
 }

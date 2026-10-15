@@ -60,8 +60,14 @@ customer data or private planning notes into tracked files. Private context live
 - **Image compression:** `lib/images/compress.ts` is shared by the admin upload and the
   import script. It outputs WebP, at most 1600px on the long edge, aiming for < 250 KB.
 - **Colour maths:** `lib/color.ts` handles OKLCH and WCAG contrast.
-- **v1 import outputs:** `scripts/import/`. `tokens.proposal.json` is a proposal until
-  Phase 1 applies it.
+- **v1 import outputs:** `scripts/import/`.
+- **Design tokens:** `styles/tokens.css` is generated from `tokens.proposal.json` by
+  `npm run tokens`. Never edit the CSS by hand.
+- **Theming:** dark is the default. Light applies under `[data-theme="light"]`.
+- **Components:** primitives are in `components/ui/`, store pieces in
+  `components/store/`. `/styleguide` shows every one of them.
+- **Catalogue data:** comes from `lib/catalog/source.ts`. It reads the v1 import until
+  Phase 2 switches it to Supabase.
 
 ## Conventions
 
