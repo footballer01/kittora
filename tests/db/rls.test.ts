@@ -21,7 +21,7 @@ beforeAll(async () => {
   );
   [publishedId, draftId] = p.rows.map((r) => r.id);
   await db.query(`INSERT INTO public.variants (product_id, size, stock) VALUES ($1, 'M', 3), ($2, 'M', 1)`, [publishedId, draftId]);
-  await db.query(`INSERT INTO public.orders (number, phone, total_paise) VALUES ('K7Q2M9', '9999999999', 90000)`);
+  await db.query(`INSERT INTO public.orders (number, name, phone, address, city, state, pincode, subtotal_paise, total_paise) VALUES ('K7Q2M9', 'A Fan', '9999999999', '1 Main Road', 'Pune', 'Maharashtra', '411001', 90000, 90000)`);
 }, 60_000);
 
 const rows = async (sql: string, params: unknown[] = []) => (await db.query(sql, params)).rows;
@@ -96,6 +96,41 @@ describe("signed-in non-admin", () => {
     await as(db, "authenticated", customerId, async () => {
       expect(await rows(`SELECT * FROM public.orders`)).toHaveLength(0);
     });
+  });
+
+  // Only the 3 admins should ever have accounts (sign-ups off), but if a
+  // non-admin account exists it must not see orders or write anything.
+  it("cannot read any order data or write any table", async () => {
+    await as(db, "authenticated", customerId, async () => {
+      for (const t of ["orders", "order_items", "order_events", "email_queue"]) {
+        expect(await rows(`SELECT * FROM public.${t}`), t).toHaveLength(0);
+      }
+      await expect(db.query(`SELECT * FROM public.rate_limits`)).rejects.toThrow(/permission denied/);
+      const writes = [
+        `INSERT INTO public.orders (number, name, phone, address, city, state, pincode, subtotal_paise, total_paise) VALUES ('X', 'x', '9', 'x', 'x', 'x', '411001', 0, 0)`,
+        `INSERT INTO public.order_items (order_id, slug, name, size, qty, unit_price_paise) SELECT id, 's', 'n', 'M', 1, 1 FROM public.orders`,
+        `INSERT INTO public.email_queue (order_id, kind, to_email, payload) VALUES (gen_random_uuid(), 'shipped', 'a@b.c', '{}')`,
+        `INSERT INTO public.delivery_zones (name, pincode_prefix, min_days, max_days) VALUES ('x', '4', 1, 2)`,
+        `INSERT INTO public.variants (product_id, size) VALUES ('${publishedId}', 'XS')`,
+        `INSERT INTO public.edits (slug, title) VALUES ('y', 'y')`,
+        `INSERT INTO storage.objects (bucket_id, name) VALUES ('site-assets', 'qr.png')`,
+        `INSERT INTO storage.objects (bucket_id, name) VALUES ('product-images', 'x.webp')`,
+      ];
+      for (const sql of writes) await expect(db.query(sql), sql).rejects.toThrow(/permission denied|row-level security/);
+      const updates = [
+        `UPDATE public.orders SET status = 'paid'`,
+        `UPDATE public.settings SET upi_id = 'evil@upi'`,
+        `UPDATE public.variants SET stock = 99`,
+        `DELETE FROM public.products`,
+        `DELETE FROM public.delivery_zones`,
+      ];
+      for (const sql of updates) expect((await db.query(sql)).affectedRows, sql).toBe(0);
+      await expect(db.query(`SELECT public.admin_set_stock($1, 9)`, [publishedId])).rejects.toThrow(/forbidden/);
+      await expect(db.query(`SELECT public.place_order('{}', '[]', '')`)).rejects.toThrow(/permission denied/);
+      await expect(db.query(`SELECT public.cancel_expired_orders()`)).rejects.toThrow(/permission denied/);
+    });
+    expect(await rows(`SELECT upi_id FROM public.settings`)).toEqual([{ upi_id: null }]);
+    expect(await rows(`SELECT status FROM public.orders WHERE number = 'K7Q2M9'`)).toEqual([{ status: "awaiting_payment" }]);
   });
 
   it("reads only their own profile and cannot promote themselves", async () => {

@@ -72,6 +72,42 @@ export async function runRlsChecks(url: string, anonKey: string): Promise<number
       },
     },
     {
+      name: "anon cannot call place_order (Edge Function only)",
+      run: async () => {
+        const { error } = await anon.rpc("place_order", { p_customer: {}, p_items: [], p_ip: "" });
+        return Boolean(error);
+      },
+    },
+    {
+      name: "anon cannot read order items, events or the email queue",
+      run: async () => {
+        const results = await Promise.all(["order_items", "order_events", "email_queue", "rate_limits"].map((t) => anon.from(t).select("*").limit(1)));
+        return results.every((r) => Boolean(r.error) || (r.data?.length ?? 0) === 0);
+      },
+    },
+    {
+      name: "anon can read settings but not change them",
+      run: async () => {
+        const read = await anon.from("settings").select("whatsapp_number").limit(1);
+        const write = await anon.from("settings").update({ upi_id: "rls-probe@upi" }, { count: "exact" }).eq("id", true);
+        return !read.error && blocked(write.error, write.count);
+      },
+    },
+    {
+      name: "track_order hides unknown orders",
+      run: async () => {
+        const { data, error } = await anon.rpc("track_order", { p_number: "KTRLSPROBE00", p_phone: "9000000000" });
+        return !error && data === null;
+      },
+    },
+    {
+      name: "anon cannot upload outside an unpaid order's folder",
+      run: async () => {
+        const { error } = await anon.storage.from("payment-proofs").upload(`${crypto.randomUUID()}/probe.png`, new Blob(["x"], { type: "image/png" }));
+        return Boolean(error);
+      },
+    },
+    {
       name: "anon is not admin",
       run: async () => {
         const { data, error } = await anon.rpc("is_admin");

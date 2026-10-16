@@ -6,7 +6,7 @@ import type { Audience, CatalogEdit, CatalogImage, CatalogProduct, KitType } fro
 export const mediaSrc = (storagePath: string) => `/media/${storagePath.replace(/^\/+/, "")}`;
 
 export const PRODUCT_SELECT =
-  "id, slug, sku, name, club, country, player, number, season, kit_type, fit, audience, description, story, story_title, video, price_paise, featured, featured_position, created_at, product_images(storage_path, width, height, alt, kind, position), variants(size, stock, position)";
+  "id, slug, sku, name, club, country, player, number, season, kit_type, fit, audience, description, story, story_title, video, price_paise, track_stock, featured, featured_position, created_at, product_images(storage_path, width, height, alt, kind, position), variants(size, stock, position)";
 export const EDIT_SELECT = "slug, title, description, position, edit_items(product_id, position)";
 
 export type DbImage = { storage_path: string; width: number | null; height: number | null; alt: string; kind: "front" | "back" | "detail" | "other"; position: number };
@@ -28,12 +28,20 @@ export type DbProduct = {
   story_title: string | null;
   video: { path: string; poster: string } | null;
   price_paise: number;
+  track_stock: boolean;
   featured: boolean;
   featured_position: number | null;
   product_images: DbImage[];
   variants: { size: string; stock: number | null; position: number }[];
 };
 export type DbEdit = { slug: string; title: string; description: string | null; position: number; edit_items: { product_id: string; position: number }[] };
+
+/**
+ * Stock as the storefront sees it. Tracking off: every size is always
+ * orderable (null, no low-stock text). Tracking on: the count, unset = 0.
+ * Mirrors place_order() in drizzle/0008_checkout_functions.sql.
+ */
+export const effectiveStock = (trackStock: boolean, stock: number | null): number | null => (trackStock ? (stock ?? 0) : null);
 
 const byPosition = <T extends { position: number }>(a: T, b: T) => a.position - b.position;
 
@@ -67,7 +75,7 @@ export function productFromDb(row: DbProduct): CatalogProduct {
     images: [front, ...rows.filter((i) => i !== front)].filter((i): i is DbImage => !!i).map(toImage),
     story: row.story ? { title: row.story_title, body: row.story } : null,
     video: row.video ? { src: mediaSrc(row.video.path), poster: mediaSrc(row.video.poster) } : null,
-    variants: [...row.variants].sort(byPosition).map((v) => ({ size: v.size, stock: v.stock })),
+    variants: [...row.variants].sort(byPosition).map((v) => ({ size: v.size, stock: effectiveStock(row.track_stock, v.stock) })),
   };
 }
 

@@ -1,0 +1,21 @@
+# Supabase project settings kept in the repo. Apply to a project with the
+# Supabase CLI:  supabase link --project-ref <ref> && supabase config push
+# (the dashboard switch is the same thing; see README "Launch checklist").
+project_id = "kittora"
+
+[auth]
+# No customer accounts: only the 3 admins ever sign in, and they are created
+# by the seed script with the service role (which still works with this off).
+enable_signup = false
+
+[auth.email]
+enable_signup = false
+
+# Called from the browser with the public key. It verifies Turnstile itself and
+# is the only caller of place_order() (service role).
+[functions.place-order]
+verify_jwt = false
+
+# Checks for the service-role key itself (database webhook / scheduled call).
+[functions.send-email]
+verify_jwt = false

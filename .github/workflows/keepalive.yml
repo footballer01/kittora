@@ -2,7 +2,8 @@ name: Keep Supabase awake
 
 # Free Supabase projects pause after a week without activity. Run one real
 # query against each project daily. Customer traffic also counts as activity;
-# this is the backup for quiet weeks.
+# this is the backup for quiet weeks. The query also cancels unpaid orders past
+# their timeout (pg_cron does this every 10 minutes; this is the backup).
 on:
   schedule:
     - cron: "17 3 * * *" # 08:47 IST
@@ -21,10 +22,10 @@ jobs:
     steps:
       - name: Query live database
         if: ${{ env.LIVE_DATABASE_URL != '' }}
-        run: psql "$LIVE_DATABASE_URL" -tAc "select 1"
+        run: psql "$LIVE_DATABASE_URL" -tAc "select public.cancel_expired_orders()"
       - name: Query staging database
         if: ${{ env.STAGING_DATABASE_URL != '' }}
-        run: psql "$STAGING_DATABASE_URL" -tAc "select 1"
+        run: psql "$STAGING_DATABASE_URL" -tAc "select public.cancel_expired_orders()"
       - name: Check live site is up
         if: ${{ env.SITE_URL != '' }}
         run: curl -fsS --max-time 20 -o /dev/null "$SITE_URL/"
