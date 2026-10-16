@@ -47,11 +47,22 @@ customer data or private planning notes into tracked files. Private context live
   - Payment screenshots go in a private bucket: images only, ≤ 5 MB, and only for
     orders awaiting payment.
 - **Edge Functions** (Deno, in `supabase/functions/`, settings in `supabase/config.toml`):
-  `place-order` (Turnstile check, then `place_order()` with the service role) and
-  `send-email` (Gmail SMTP on port 465, drains `email_queue`). Phase 5 adds admin login
-  and the publish trigger. They are excluded from tsc and ESLint.
+  `place-order` (Turnstile check, then `place_order()` with the service role),
+  `send-email` (Gmail SMTP on port 465, drains `email_queue`), `admin-login` (rate limit,
+  username → random sign-in email, then password sign-in) and `publish` (admin-only,
+  dispatches `deploy.yml`). They are excluded from tsc and ESLint.
 - **Public sign-ups stay off** (`enable_signup = false` in `supabase/config.toml`). Only
   the 3 admins have accounts.
+- **Admin** (`app/admin/`, `components/admin/`, `lib/admin/`): static client pages using
+  the admin's own session. `is_admin()` requires aal2 once an admin has TOTP on. Orders
+  change only via `admin_set_order_status()`; the status flow is enforced by a trigger
+  (`lib/admin/order-flow.ts` mirrors it, checked by a test). Every signed-in write is
+  logged to `admin_audit_log` by trigger. Admin sign-in emails are random
+  (`newAdminEmail()`), never derived from the username. SQL in
+  `drizzle/0010_admin_functions.sql`, tests in `tests/db/admin.test.ts`.
+- **Route groups:** store pages live in `app/(store)/` (header/footer/cart via
+  `components/store/chrome.tsx`); `/admin` has its own shell. `/preview` and `/styleguide`
+  are `*.dev.tsx` (dev only).
 
 ## Commands
 
@@ -73,9 +84,9 @@ customer data or private planning notes into tracked files. Private context live
 - **Theming:** dark is the default. Light applies under `[data-theme="light"]`.
 - **Components:** primitives are in `components/ui/`, store pieces in
   `components/store/`.
-- **Design review:** happens at `/preview` (home) and `/preview/product/*`. Their sample
+- **Design review:** happens at `/preview` (home) and `/preview/product/*` in `next dev`. Their sample
   content lives only in `lib/preview/sample.ts` and is labelled as sample.
-- **`/styleguide`:** `app/styleguide/page.dev.tsx` exists in `next dev` only.
+- **`/styleguide`:** `app/(store)/styleguide/page.dev.tsx` exists in `next dev` only.
 - **Product links:** use plain `<a data-vt>`, so cross-document view transitions and
   speculation rules apply.
 - **Quiet luxury:** no countdowns, urgency banners or strike-through prices. Low stock
