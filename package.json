@@ -4,15 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsx scripts/catalog/snapshot.ts && next build",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "DB_TARGET=STAGING drizzle-kit migrate",
-    "preview": "next build && wrangler dev --port 8788",
-    "deploy": "next build && wrangler deploy",
+    "preview": "npm run build && wrangler dev --port 8788",
+    "deploy": "npm run build && wrangler deploy",
     "db:migrate:live": "DB_TARGET=LIVE drizzle-kit migrate",
     "seed": "tsx scripts/seed.ts",
     "rls:check": "tsx scripts/rls-check.ts",
@@ -22,7 +22,8 @@
     "import:baseline": "tsx scripts/import/baseline.ts",
     "import:tokens": "tsx scripts/import/tokens.ts",
     "import:report": "tsx scripts/import/report.ts",
-    "tokens": "tsx scripts/build-tokens.ts"
+    "tokens": "tsx scripts/build-tokens.ts",
+    "catalog": "tsx scripts/catalog/snapshot.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.3.1",

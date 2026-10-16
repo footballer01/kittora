@@ -1,7 +1,8 @@
 // Database schema. Drizzle generates migrations from this file; it is never
 // imported by the site (the browser talks to Supabase with the anon key).
 //
-// Security model: RLS is on for every table. Anyone may read published
+// Security model: RLS is on for every table. There are no customer accounts
+// (guest checkout; wishlist in localStorage). Anyone may read published
 // catalogue rows. Only admins (profiles.role = 'admin', checked by the
 // SECURITY DEFINER function public.is_admin()) may write. Orders are not
 // readable or writable directly; Phase 3 adds SECURITY DEFINER functions for
@@ -27,6 +28,8 @@ import { anonRole, authenticatedRole, authUsers } from "drizzle-orm/supabase";
 const isAdmin = sql`(select public.is_admin())`;
 const everyone = [anonRole, authenticatedRole];
 
+// Only admins sign in. "customer" stays in the enum (Postgres can't drop enum
+// values cheaply) as the inert default for any non-admin auth user.
 export const roleEnum = pgEnum("user_role", ["customer", "admin"]);
 export const audienceEnum = pgEnum("audience", ["men", "women", "kids"]);
 export const kitTypeEnum = pgEnum("kit_type", ["home", "away", "third", "retro", "special"]);
@@ -53,7 +56,7 @@ export const profiles = pgTable(
       .primaryKey()
       .references(() => authUsers.id, { onDelete: "cascade" }),
     role: roleEnum("role").notNull().default("customer"),
-    // Admin login name; unique ignoring case. Null for customers.
+    // Admin login name; unique ignoring case.
     username: text("username"),
     ...timestamps,
   },
@@ -213,14 +216,14 @@ export const editItems = pgTable(
   ],
 ).enableRLS();
 
-// Minimal now so RLS can be verified; Phase 3 adds address, items, UTR,
-// place_order() and lookup functions.
+// Guest checkout only: no customer accounts, so orders belong to no user.
+// Customers track orders by order number + phone. Minimal now so RLS can be
+// verified; Phase 3 adds address, items, UTR, place_order() and lookup functions.
 export const orders = pgTable(
   "orders",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     number: text("number").notNull().unique(),
-    userId: uuid("user_id").references(() => authUsers.id, { onDelete: "set null" }),
     phone: text("phone").notNull(),
     email: text("email"),
     status: orderStatusEnum("status").notNull().default("awaiting_payment"),

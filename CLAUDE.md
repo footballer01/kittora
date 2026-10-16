@@ -20,6 +20,9 @@ customer data or private planning notes into tracked files. Private context live
   - Orders are created only by the `place_order` SECURITY DEFINER function, which
     re-prices from the database and checks and reserves stock. Clients never send prices.
   - Customers read orders only by order number + phone, through a SQL function.
+- **No customer accounts.** Guest checkout only; orders are tracked by order number +
+  phone. No reviews. The wishlist lives in localStorage (`lib/stores/wishlist.ts`).
+  Only admins sign in.
 - **Security never relies on hidden code.** Assume every client file is public and
   editable by an attacker.
 - **Catalogue pages are pre-built at deploy time.** Price and stock always load live on
@@ -73,11 +76,17 @@ customer data or private planning notes into tracked files. Private context live
   speculation rules apply.
 - **Quiet luxury:** no countdowns, urgency banners or strike-through prices. Low stock
   is shown as calm text only.
-- **Images (Phase 2):** product images and videos are copied from Supabase Storage into
-  the static build at publish time and served by Cloudflare, so traffic never uses
-  Supabase egress.
-- **Catalogue data:** comes from `lib/catalog/source.ts`. It reads the v1 import until
-  Phase 2 switches it to Supabase.
+- **Catalogue build:** `npm run build` runs `scripts/catalog/snapshot.ts` first. With
+  `NEXT_PUBLIC_SUPABASE_*` set it reads published rows with the anon key, copies images
+  and videos from Storage into `public/media/` (served by Cloudflare, no Supabase egress)
+  and writes `.catalog/snapshot.json`; without them, pages build from the v1 import.
+  It also writes `public/_redirects` (v1 `/product/<id>` → new URL) and `_headers`.
+- **Live data:** price and stock load in the browser (`lib/catalog/live.ts`); static
+  HTML shows build-time values until then.
+- **Shop filters** (`lib/catalog/filters.ts`) are URL-synced; a facet shows only when it
+  has 2+ values, so empty admin fields never produce filters.
+- **SEO:** metadata per page, Product + BreadcrumbList JSON-LD (`lib/seo.ts`), sitemap,
+  robots, default OG image; product/club pages share the jersey photo.
 
 ## Conventions
 

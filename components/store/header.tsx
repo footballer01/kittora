@@ -9,15 +9,20 @@ import { useLiveCategoryCounts } from "@/lib/catalog/live-counts";
 import { cartOps, useCart } from "@/lib/stores/cart";
 import { cn } from "@/lib/cn";
 import { IconButton } from "@/components/ui/button";
-import { BagIcon, CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
+import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
+import { useWishlist } from "@/lib/stores/wishlist";
 import { Logo } from "./logo";
+
+const iconLink = "relative inline-flex size-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface active:bg-surface-2";
 
 export function Header({ counts }: { counts: CategoryCounts }) {
   const live = useLiveCategoryCounts(counts);
   const nav = [{ label: "Shop all", href: "/shop" }, ...visibleCategories(live), { label: "Size guide", href: "/size-guide" }];
+  const mobileNav = [...nav, { label: "Wishlist", href: "/wishlist" }];
   const pathname = usePathname();
   const count = useCart((s) => cartOps.count(s.lines));
   const setOpen = useCart((s) => s.setOpen);
+  const saved = useWishlist((s) => s.slugs.length);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -43,9 +48,13 @@ export function Header({ counts }: { counts: CategoryCounts }) {
           })}
         </nav>
         <div className="ml-auto flex items-center gap-1">
-          <IconButton label="Search jerseys">
+          <Link href="/search" aria-label="Search jerseys" className={iconLink}>
             <SearchIcon />
-          </IconButton>
+          </Link>
+          <Link href="/wishlist" aria-label={saved ? `Wishlist, ${saved} saved` : "Wishlist"} className={cn(iconLink, "max-sm:hidden")}>
+            <HeartIcon />
+            {saved > 0 && <span className="absolute top-2 right-2 size-2 rounded-full bg-brand" aria-hidden />}
+          </Link>
           <IconButton label={count ? `Cart, ${count} item${count === 1 ? "" : "s"}` : "Cart, empty"} onClick={() => setOpen(true)}>
             <BagIcon />
             {count > 0 && (
@@ -73,7 +82,7 @@ export function Header({ counts }: { counts: CategoryCounts }) {
                 </div>
                 <Dialog.Description className="sr-only">Site navigation</Dialog.Description>
                 <nav aria-label="Mobile" className="mt-6 grid">
-                  {nav.map((item) => (
+                  {mobileNav.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}

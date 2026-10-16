@@ -1,5 +1,6 @@
 import type { CatalogEdit, CatalogProduct, ProductHref } from "@/lib/catalog/types";
 import { defaultHref } from "@/lib/catalog/types";
+import { ArrowRightIcon } from "@/components/ui/icons";
 import { ProductCard } from "./product-card";
 import { SampleBadge } from "./peg-rail";
 
@@ -10,12 +11,14 @@ export function EditRail({
   href = defaultHref,
   eyebrow = "The edit",
   sample = false,
+  viewAll,
 }: {
   edit: CatalogEdit;
   products: CatalogProduct[];
   href?: ProductHref;
   eyebrow?: string;
   sample?: boolean;
+  viewAll?: string;
 }) {
   if (products.length === 0) return null;
   const id = `edit-${edit.slug}`;
@@ -30,6 +33,11 @@ export function EditRail({
           {edit.description && <p className="mt-2 text-ink-muted">{edit.description}</p>}
         </div>
         {sample && <SampleBadge>Sample edit</SampleBadge>}
+        {viewAll && (
+          <a href={viewAll} className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-step-n1 font-semibold text-ink hover:text-brand-text">
+            View all <ArrowRightIcon width={16} height={16} />
+          </a>
+        )}
       </div>
       <ul className="no-scrollbar mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-px-4 px-4 sm:gap-6 sm:scroll-px-6 sm:px-6 lg:scroll-px-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))]">
         {products.map((p) => (

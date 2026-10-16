@@ -6,7 +6,7 @@
 //   each half (public/fixtures/preview/*-front.jpg / *-back.jpg).
 // - Shirt numbers: read from the product names for this preview only. Real
 //   numbers are entered by admins.
-import { getCatalog } from "@/lib/catalog/source";
+import { getImportCatalog } from "@/lib/catalog/source";
 import type { CatalogEdit, CatalogImage, CatalogProduct, ProductHref } from "@/lib/catalog/types";
 
 export const previewHref: ProductHref = (p) => `/preview/product/${p.slug}`;
@@ -36,7 +36,7 @@ function crop(slug: string, side: "front" | "back", alt: string): CatalogImage {
 }
 
 export function getPreviewCatalog(): CatalogProduct[] {
-  return getCatalog().map((p) => {
+  return getImportCatalog().map((p) => {
     const alt = p.image?.alt ?? p.name;
     const front = crop(p.slug, "front", alt);
     const back = crop(p.slug, "back", alt);

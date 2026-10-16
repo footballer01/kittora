@@ -69,3 +69,9 @@ CLAUDE.local.md
 
 # local UI screenshots
 /screenshots/
+
+# build-time catalogue snapshot and media copied from Supabase Storage
+/.catalog/
+/public/media/
+/public/_redirects
+/public/_headers

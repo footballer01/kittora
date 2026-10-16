@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { defaultHref, isWide, type CatalogProduct, type ProductHref } from "@/lib/catalog/types";
 import { cn } from "@/lib/cn";
-import { Price } from "./price";
+import { CardSizes, LivePrice, WishlistButton } from "./live";
 
 /**
  * Image-first card, one 4:5 frame on a calm white backdrop. Desktop hover (or
@@ -49,21 +49,8 @@ export function ProductCard({
             className={cn("card-back absolute inset-0 size-full", isWide(backImage) ? "object-contain p-[7%]" : "object-cover")}
           />
         )}
-        {sizes.length > 0 && (
-          <ul aria-label="Sizes" className="card-sizes absolute inset-x-3 bottom-3 flex flex-wrap justify-center gap-1.5">
-            {sizes.map((v) => (
-              <li
-                key={v.size}
-                className={cn(
-                  "rounded-full bg-white/90 px-2.5 py-1 font-mono text-[0.72rem] font-semibold text-neutral-900 shadow-sm backdrop-blur",
-                  v.stock === 0 && "text-neutral-400",
-                )}
-              >
-                {v.size}
-              </li>
-            ))}
-          </ul>
-        )}
+        <CardSizes product={product} />
+        <WishlistButton slug={product.slug} name={product.name} className="card-wish" />
         {(backImage || sizes.length > 0) && (
           <label className="card-flip absolute top-2 right-2 z-10 flex size-11 cursor-pointer items-center justify-center rounded-full bg-white/85 text-neutral-900 shadow-sm backdrop-blur has-focus-visible:outline-2 has-focus-visible:outline-focus">
             <input type="checkbox" className="card-flip-input sr-only" aria-label={`Quick look: ${product.name}`} />
@@ -81,7 +68,7 @@ export function ProductCard({
             {product.name}
           </a>
         </h3>
-        <Price paise={product.pricePaise} className="text-step-n1" />
+        <LivePrice product={product} className="text-step-n1" />
       </div>
     </article>
   );

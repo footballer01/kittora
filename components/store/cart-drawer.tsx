@@ -5,14 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { cartOps, lineKey, MAX_QTY_PER_LINE, useCart } from "@/lib/stores/cart";
+import { useWishlist } from "@/lib/stores/wishlist";
 import { ButtonLink, IconButton } from "@/components/ui/button";
 import { BagIcon, CloseIcon, MinusIcon, PlusIcon } from "@/components/ui/icons";
 import { Price } from "./price";
 
-/** Loads the saved cart after mount (pages are static, so they render empty first). */
+/** Loads the saved cart and wishlist after mount (pages are static, so they render empty first). */
 export function CartHydrator() {
   useEffect(() => {
     void useCart.persist.rehydrate();
+    void useWishlist.persist.rehydrate();
   }, []);
   return null;
 }
