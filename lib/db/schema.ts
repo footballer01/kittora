@@ -5,8 +5,9 @@
 // (guest checkout; wishlist in localStorage). Anyone may read published
 // catalogue rows. Only admins (profiles.role = 'admin', checked by the
 // SECURITY DEFINER function public.is_admin()) may write. Orders are not
-// readable or writable directly; Phase 3 adds SECURITY DEFINER functions for
-// placing and looking up orders.
+// readable or writable by the public: place_order() (called by the place-order
+// Edge Function after Turnstile), track_order() and submit_payment() are the
+// only ways in, all SECURITY DEFINER (drizzle/0008_checkout_functions.sql).
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -30,6 +31,8 @@ const everyone = [anonRole, authenticatedRole];
 
 // Only admins sign in. "customer" stays in the enum (Postgres can't drop enum
 // values cheaply) as the inert default for any non-admin auth user.
+export const emailKindEnum = pgEnum("email_kind", ["order_placed", "payment_confirmed", "shipped"]);
+export const emailStatusEnum = pgEnum("email_status", ["pending", "sent", "skipped", "failed"]);
 export const roleEnum = pgEnum("user_role", ["customer", "admin"]);
 export const audienceEnum = pgEnum("audience", ["men", "women", "kids"]);
 export const kitTypeEnum = pgEnum("kit_type", ["home", "away", "third", "retro", "special"]);
@@ -94,6 +97,9 @@ export const products = pgTable(
     // paths point into the product-media bucket, copied at publish time.
     video: jsonb("video").$type<{ path: string; poster: string; bytes: number; durationMs: number }>(),
     pricePaise: integer("price_paise").notNull(),
+    // Off: every size can always be ordered and stock numbers are ignored
+    // (v1 had no counts). On: variants.stock is enforced; null counts as 0.
+    trackStock: boolean("track_stock").notNull().default(false),
     featured: boolean("featured").notNull().default(false),
     featuredPosition: integer("featured_position"),
     published: boolean("published").notNull().default(true),
@@ -217,23 +223,175 @@ export const editItems = pgTable(
 ).enableRLS();
 
 // Guest checkout only: no customer accounts, so orders belong to no user.
-// Customers track orders by order number + phone. Minimal now so RLS can be
-// verified; Phase 3 adds address, items, UTR, place_order() and lookup functions.
+// Customers track orders by order number + phone. Rows are written only by the
+// SECURITY DEFINER functions in 0008 and by admins.
 export const orders = pgTable(
   "orders",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    // Random, non-sequential (new_order_number()).
     number: text("number").notNull().unique(),
+    name: text("name").notNull(),
     phone: text("phone").notNull(),
     email: text("email"),
+    address: text("address").notNull(),
+    city: text("city").notNull(),
+    state: text("state").notNull(),
+    pincode: text("pincode").notNull(),
     status: orderStatusEnum("status").notNull().default("awaiting_payment"),
+    subtotalPaise: integer("subtotal_paise").notNull(),
+    shippingPaise: integer("shipping_paise").notNull().default(0),
     totalPaise: integer("total_paise").notNull(),
+    utr: text("utr"),
+    // Object in the private payment-proofs bucket, under <upload_key>/.
+    paymentProofPath: text("payment_proof_path"),
+    // Secret folder name for the screenshot upload; given only to whoever placed the order.
+    uploadKey: uuid("upload_key").notNull().defaultRandom().unique(),
+    // md5 of the client IP, only to cap unpaid orders per IP.
+    ipHash: text("ip_hash"),
+    // Unpaid orders auto-cancel after this (null = no timeout set in Settings).
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
     ...timestamps,
   },
   (t) => [
     check("orders_total_nonnegative", sql`${t.totalPaise} >= 0`),
+    check("orders_total_sum", sql`${t.totalPaise} = ${t.subtotalPaise} + ${t.shippingPaise}`),
+    index("orders_phone_status_idx").on(t.phone, t.status),
+    index("orders_status_expires_idx").on(t.status, t.expiresAt),
     pgPolicy("orders: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
     pgPolicy("orders: admin update", { for: "update", to: authenticatedRole, using: isAdmin, withCheck: isAdmin }),
-    // No public insert: orders are created only by place_order() (Phase 3).
   ],
+).enableRLS();
+
+export const orderItems = pgTable(
+  "order_items",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    productId: uuid("product_id").references(() => products.id, { onDelete: "set null" }),
+    variantId: uuid("variant_id").references(() => variants.id, { onDelete: "set null" }),
+    // Copied at order time so the order reads the same if the product changes.
+    slug: text("slug").notNull(),
+    name: text("name").notNull(),
+    size: text("size").notNull(),
+    qty: integer("qty").notNull(),
+    unitPricePaise: integer("unit_price_paise").notNull(),
+    // True while this line holds stock (tracked products only); released on cancel.
+    reserved: boolean("reserved").notNull().default(false),
+  },
+  (t) => [
+    check("order_items_qty_range", sql`${t.qty} between 1 and 5`),
+    index("order_items_order_idx").on(t.orderId),
+    pgPolicy("order_items: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
+  ],
+).enableRLS();
+
+export const orderEvents = pgTable(
+  "order_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    status: orderStatusEnum("status").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("order_events_order_idx").on(t.orderId),
+    pgPolicy("order_events: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
+  ],
+).enableRLS();
+
+// Store settings: exactly one row. Empty/0 by default; the storefront hides
+// empty fields. Public read (nothing here is secret), admin update.
+export const settings = pgTable(
+  "settings",
+  {
+    id: boolean("id").primaryKey().default(true),
+    upiId: text("upi_id"),
+    payeeName: text("payee_name"),
+    // Path in the public site-assets bucket.
+    qrImagePath: text("qr_image_path"),
+    whatsappNumber: text("whatsapp_number"),
+    // 0 = unpaid orders never auto-cancel.
+    unpaidTimeoutMinutes: integer("unpaid_timeout_minutes").notNull().default(0),
+    shippingFeePaise: integer("shipping_fee_paise").notNull().default(0),
+    // 0 = no free-shipping threshold.
+    freeShippingThresholdPaise: integer("free_shipping_threshold_paise").notNull().default(0),
+    contactEmail: text("contact_email"),
+    contactPhone: text("contact_phone"),
+    contactAddress: text("contact_address"),
+    instagramUrl: text("instagram_url"),
+    ...timestamps,
+  },
+  (t) => [
+    check("settings_singleton", sql`${t.id}`),
+    check(
+      "settings_nonnegative",
+      sql`${t.unpaidTimeoutMinutes} >= 0 and ${t.shippingFeePaise} >= 0 and ${t.freeShippingThresholdPaise} >= 0`,
+    ),
+    pgPolicy("settings: public read", { for: "select", to: everyone, using: sql`true` }),
+    pgPolicy("settings: admin update", { for: "update", to: authenticatedRole, using: isAdmin, withCheck: isAdmin }),
+  ],
+).enableRLS();
+
+// Delivery estimates by pincode prefix ("4" = all of 4xxxxx, "411" = Pune…);
+// the longest matching prefix wins. No rows = no estimate shown.
+export const deliveryZones = pgTable(
+  "delivery_zones",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    pincodePrefix: text("pincode_prefix").notNull().unique(),
+    minDays: integer("min_days").notNull(),
+    maxDays: integer("max_days").notNull(),
+    ...timestamps,
+  },
+  (t) => [
+    check("delivery_zones_prefix", sql`${t.pincodePrefix} ~ '^[0-9]{1,6}$'`),
+    check("delivery_zones_days", sql`${t.minDays} >= 0 and ${t.maxDays} >= ${t.minDays}`),
+    pgPolicy("delivery_zones: public read", { for: "select", to: everyone, using: sql`true` }),
+    pgPolicy("delivery_zones: admin insert", { for: "insert", to: authenticatedRole, withCheck: isAdmin }),
+    pgPolicy("delivery_zones: admin update", { for: "update", to: authenticatedRole, using: isAdmin, withCheck: isAdmin }),
+    pgPolicy("delivery_zones: admin delete", { for: "delete", to: authenticatedRole, using: isAdmin }),
+  ],
+).enableRLS();
+
+// Outgoing customer email, filled by triggers and drained by the send-email
+// Edge Function (service role). Never readable by the public.
+export const emailQueue = pgTable(
+  "email_queue",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    kind: emailKindEnum("kind").notNull(),
+    toEmail: text("to_email").notNull(),
+    payload: jsonb("payload").notNull(),
+    status: emailStatusEnum("status").notNull().default("pending"),
+    attempts: integer("attempts").notNull().default(0),
+    lastError: text("last_error"),
+    nextAttemptAt: timestamp("next_attempt_at", { withTimezone: true }).notNull().defaultNow(),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    ...timestamps,
+  },
+  (t) => [
+    uniqueIndex("email_queue_order_kind_idx").on(t.orderId, t.kind),
+    index("email_queue_pending_idx").on(t.status, t.nextAttemptAt),
+    pgPolicy("email_queue: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
+  ],
+).enableRLS();
+
+// Fixed-window counters for rate limits. Touched only by SECURITY DEFINER functions.
+export const rateLimits = pgTable(
+  "rate_limits",
+  {
+    key: text("key").notNull(),
+    windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+    hits: integer("hits").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.key, t.windowStart] })],
 ).enableRLS();

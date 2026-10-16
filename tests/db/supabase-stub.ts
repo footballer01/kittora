@@ -44,13 +44,22 @@ export async function freshDatabase(): Promise<PGlite> {
 }
 
 /** Run `fn` as a Supabase role, optionally as a specific signed-in user. */
-export async function as<T>(db: PGlite, role: "anon" | "authenticated", userId: string | null, fn: () => Promise<T>): Promise<T> {
+export async function as<T>(
+  db: PGlite,
+  role: "anon" | "authenticated" | "service_role",
+  userId: string | null,
+  fn: () => Promise<T>,
+  ip = "203.0.113.1",
+): Promise<T> {
   await db.exec(`SET ROLE ${role}`);
   await db.query(`SELECT set_config('request.jwt.claim.sub', $1, false)`, [userId ?? ""]);
+  // PostgREST exposes request headers this way; client_ip() reads them.
+  await db.query(`SELECT set_config('request.headers', $1, false)`, [JSON.stringify({ "cf-connecting-ip": ip })]);
   try {
     return await fn();
   } finally {
     await db.exec("RESET ROLE");
     await db.query(`SELECT set_config('request.jwt.claim.sub', '', false)`);
+    await db.query(`SELECT set_config('request.headers', '', false)`);
   }
 }

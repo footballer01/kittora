@@ -50,6 +50,20 @@
       "when": 1792077590313,
       "tag": "0006_media_bucket_public",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792151466751,
+      "tag": "0007_checkout",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792151472691,
+      "tag": "0008_checkout_functions",
+      "breakpoints": true
     }
   ]
 }

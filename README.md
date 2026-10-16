@@ -3,7 +3,7 @@
 Football jerseys for fans in India, curated like museum pieces. This is the owned
 codebase for the store currently published as **Terrace Archive**.
 
-**Status:** Phase 0.5 — v1 imported (13 products, theme, copy, baseline). Database schema, RLS and seed are ready; Supabase projects not yet created. Catalogue, checkout and admin arrive in later phases.
+**Status:** Phase 3 — store pages, cart, guest checkout with UPI payment, order tracking and order email are built and tested (against an in-memory Postgres and a mocked Supabase). The Supabase projects are not created yet; until they are, the site builds from the v1 import and ordering is switched off. Admin arrives in Phase 5. See the [launch checklist](#launch-checklist).
 
 ## How it works
 
@@ -26,8 +26,38 @@ GitHub (public repo) ──push / "Publish changes"──▶ GitHub Actions: nex
   - Customers read their own order only through a function that takes the order number
     and phone.
   - Only the admin role can write.
-- **Edge Functions** send order email, and the admin's **Publish changes** button
-  re-deploys the site after catalogue edits.
+- **No customer accounts.** Checkout is guest-only, orders are tracked with the order
+  number + phone, and the wishlist lives in the browser. Only the 3 admins sign in.
+- **Edge Functions** check Cloudflare Turnstile before an order is placed, send order
+  email, and (Phase 5) re-deploy the site when an admin presses **Publish changes**.
+
+### Ordering, step by step
+
+1. The cart is saved in the browser. It shows live prices and stock, flags items that
+   sold out, and caps each item at 5 (or at the stock left, for stock-tracked products).
+2. `/checkout` asks for name, phone, optional email and address. The pincode fills in
+   city and state from India Post's directory (bundled in `public/pincodes/`), and a
+   delivery estimate shows when an admin-defined delivery zone matches.
+3. **Place order** sends only product slugs, sizes and quantities, plus a Turnstile token,
+   to the `place-order` Edge Function. It verifies Turnstile and calls `place_order()`,
+   which re-prices from the database, reserves stock, adds shipping from Settings, caps
+   unpaid orders per phone and per IP, and returns a random order number.
+4. `/order/<number>/pay` shows a UPI QR for the exact total (or the admin's uploaded QR
+   with the amount beside it), a **Pay with UPI app** button on phones, and a WhatsApp
+   link. The customer then submits the UTR and, optionally, a screenshot (private bucket,
+   images only, 5 MB max). The order moves to *payment submitted*.
+5. An admin checks the payment and marks it *paid* → *packed* → *shipped* → *delivered*.
+   `/track` shows that timeline for an order number + phone (rate-limited).
+6. Unpaid orders are cancelled after the timeout in Settings and their stock is released
+   (pg_cron every 10 minutes; the daily keepalive workflow is the backup). A timeout of
+   0 means never.
+7. Emails go out on order placed, payment confirmed and shipped, when an email was given.
+
+**Stock tracking** is a per-product switch. Off (the default, and how the 13 imported
+products start): every size can always be ordered and no stock numbers or low-stock
+messages show. On: each size's stock is enforced and reserved; a size at 0 shows as sold
+out. `admin_set_stock()` sets every size of a product at once (the admin screen for it
+arrives in Phase 5).
 
 ## Stack
 
@@ -69,7 +99,7 @@ npm run dev                  # http://localhost:3000
 | `npm run preview` | Builds and serves `out/` locally exactly as Cloudflare will |
 | `npm run db:generate` | Generate a migration from `lib/db/schema.ts` |
 | `npm run db:migrate` / `db:migrate:live` | Apply migrations to staging / live |
-| `npm run seed -- --target staging\|live` | Migrate, upload images, upsert products and variants, create admins, run RLS checks |
+| `npm run seed -- --target staging\|live` | Migrate, upload images, upsert products and variants, create admins, check sign-ups are off, run RLS checks |
 | `npm run rls:check -- --target staging\|live` | Probe a project with the anon key: catalogue readable, nothing writable, orders hidden |
 | `npm run import:*` | Re-run the v1 import (see `scripts/import/README.md`) |
 
@@ -103,9 +133,9 @@ There are two Supabase projects, both on the free plan:
 | Where | What |
 | --- | --- |
 | `.env.local` (never committed) | Everything in `.env.example`: `NEXT_PUBLIC_*` with staging values, plus `STAGING_*` and `LIVE_*` for scripts |
-| GitHub repo **variables** (public values) | `DEPLOY_ENABLED`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` |
+| GitHub repo **variables** (public values) | `DEPLOY_ENABLED`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY` |
 | GitHub repo **secrets** | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `LIVE_DATABASE_URL`, `STAGING_DATABASE_URL` |
-| Supabase Edge Function secrets | `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `GITHUB_DEPLOY_TOKEN`, `GITHUB_REPO` |
+| Supabase Edge Function secrets | `TURNSTILE_SECRET_KEY`, `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `SITE_URL`, `GITHUB_DEPLOY_TOKEN`, `GITHUB_REPO` |
 
 - **The service-role keys never ship to the browser.** They are used only by local
   scripts (migrations, seed) and live in `.env.local`.
@@ -150,12 +180,44 @@ live project active. As a backup, the **Keep Supabase awake** workflow queries b
 projects every day. GitHub turns off scheduled workflows in a public repo after 60 days
 with no commits. If that happens, re-enable the workflow in the Actions tab.
 
+## Edge Functions
+
+Two functions live in `supabase/functions/`, with their settings in `supabase/config.toml`.
+Deploy them with the [Supabase CLI](https://supabase.com/docs/guides/cli) (free):
+
+```bash
+supabase login
+supabase link --project-ref <ref>        # once per project
+supabase config push                     # applies supabase/config.toml (sign-ups off)
+supabase functions deploy place-order
+supabase functions deploy send-email
+```
+
+| Function | Called by | Secrets |
+| --- | --- | --- |
+| `place-order` | The checkout page | `TURNSTILE_SECRET_KEY` |
+| `send-email` | A database webhook on `email_queue` | `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `SITE_URL` |
+
+### Cloudflare Turnstile (bot check at checkout)
+
+1. In the Cloudflare dashboard, open **Turnstile → Add widget**. Add your site's domain
+   (and `localhost` for testing), and choose **Managed** mode. It's free.
+2. Put the **site key** in the GitHub repo variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (and
+   in `.env.local` to test locally).
+3. Store the **secret key** on both Supabase projects:
+   ```bash
+   supabase secrets set TURNSTILE_SECRET_KEY=0x... --project-ref <ref>
+   ```
+
+Without the secret, the function logs a warning and skips the check, so set it before launch.
+
 ## Order email (Gmail)
 
-New orders and status changes add rows to `email_queue`. A database webhook calls the
-`send-email` Edge Function, which sends each row and retries failures with backoff, so
-hitting Gmail's daily limit never fails an order. Until the Gmail secrets exist, emails
-are skipped and logged, and the site works normally.
+`place_order()` and status changes add rows to `email_queue` (order placed, payment
+confirmed, shipped), only for orders with an email. The `send-email` Edge Function sends
+them, retrying failures with backoff up to 5 times, so hitting Gmail's daily limit never
+fails an order. Until the Gmail secrets exist, each email is marked *skipped* and logged,
+and the site works normally.
 
 Supabase blocks outgoing ports 25 and 587 from Edge Functions, so the function uses
 `smtp.gmail.com:465` (implicit SSL).
@@ -164,18 +226,32 @@ Supabase blocks outgoing ports 25 and 587 from Edge Functions, so the function u
 2. Go to Google Account → Security → **App passwords** and create one called "Kittora".
 3. Store the secrets on **both** Supabase projects:
    ```bash
-   supabase secrets set GMAIL_USER=you@gmail.com GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx --project-ref <ref>
+   supabase secrets set GMAIL_USER=you@gmail.com GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx SITE_URL=https://<your-site> --project-ref <ref>
    ```
+4. In Supabase, go to **Database → Webhooks → Create a new hook**:
+   - Table `email_queue`, event **Insert**.
+   - Type **Supabase Edge Functions**, function `send-email`, method POST.
+   - Add the header `Authorization: Bearer <service_role key>`.
 
-### Supabase Auth email (customer sign-in codes)
+## Launch checklist
 
-Supabase's built-in mailer is for testing only and sends very few messages, so set up
-custom SMTP before launch:
+Do each item on **both** Supabase projects (staging and live) unless noted.
 
-1. In Supabase, go to **Authentication → Emails → SMTP Settings → Enable custom SMTP**.
-2. Use host `smtp.gmail.com`, port `465`, your Gmail address as the username, and the
-   app password. Set the sender to the same Gmail address with the name "Kittora".
-3. Repeat on the staging project, or use a second Gmail account for it.
+- [ ] **Turn off public sign-ups in Supabase Auth (both projects).** Authentication →
+      Sign In / Providers → turn off **Allow new users to sign up**, or run
+      `supabase config push`, which applies `enable_signup = false` from
+      `supabase/config.toml`. Only the 3 admins may ever have accounts (the seed creates
+      them with the service role, which still works). `npm run seed` warns loudly while
+      sign-ups are on.
+- [ ] Deploy the `place-order` and `send-email` Edge Functions (above).
+- [ ] Turnstile: site key in the repo variable, secret key in Supabase secrets.
+- [ ] Gmail secrets and the `email_queue` webhook.
+- [ ] In Settings (admin, Phase 5; until then the Supabase table editor, `settings` row):
+      UPI ID, payee name, unpaid-order timeout, shipping fee and free-shipping threshold.
+- [ ] Place a real ₹1 test order on live and pay it by scanning the QR with two
+      different UPI apps.
+- [ ] Check that pg_cron is enabled (Database → Extensions) and that the job
+      `kittora-cancel-unpaid` is listed under Integrations → Cron.
 
 ## Adding a custom domain later
 
@@ -183,10 +259,16 @@ custom SMTP before launch:
    switch the nameservers to Cloudflare's, or register it at Cloudflare.
 2. Go to **Workers & Pages → kittora → Settings → Domains & Routes → Add → Custom domain**.
 3. Update the repo variable `NEXT_PUBLIC_SITE_URL` and redeploy.
-4. Update the Supabase **Auth → URL configuration** (site URL and redirect URLs) and the
-   Google OAuth redirect URIs.
+4. Update the Supabase **Auth → URL configuration** (site URL), the `SITE_URL` Edge
+   Function secret and the Turnstile widget's domains.
 5. Optionally, move order email to a domain sender. That means verifying the domain's
    SPF/DKIM records and swapping the Edge Function's transport.
+
+## Data credits
+
+Pincode → city/state data: India Post's *All India Pincode Directory*, published on
+data.gov.in under the Government Open Data License – India. Rebuild it with
+`scripts/pincodes/build.ts`.
 
 ## Repository security
 

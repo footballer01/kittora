@@ -135,6 +135,7 @@ describe("productFromDb", () => {
     story_title: null,
     video: null,
     price_paise: 100,
+    track_stock: true,
     featured: false,
     featured_position: null,
     product_images: [
@@ -144,6 +145,7 @@ describe("productFromDb", () => {
     variants: [
       { size: "L", stock: 2, position: 1 },
       { size: "M", stock: 0, position: 0 },
+      { size: "XL", stock: null, position: 2 },
     ],
   };
 
@@ -152,7 +154,13 @@ describe("productFromDb", () => {
     expect(p.image?.src).toBe("/media/products/s/1.webp");
     expect(p.backImage?.src).toBe("/media/products/s/2.webp");
     expect(p.images.map((i) => i.alt)).toEqual(["f", "b"]);
-    expect(p.variants.map((v) => v.size)).toEqual(["M", "L"]);
+    expect(p.variants).toEqual([
+      { size: "M", stock: 0 },
+      { size: "L", stock: 2 },
+      { size: "XL", stock: 0 },
+    ]);
+    // Stock tracking off: every size orderable, no counts shown.
+    expect(productFromDb({ ...row, track_stock: false }).variants.map((v) => v.stock)).toEqual([null, null, null]);
     expect(p.story).toEqual({ title: null, body: "Body" });
     expect(p.kitType).toBe("home");
   });

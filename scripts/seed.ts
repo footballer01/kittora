@@ -1,5 +1,7 @@
 // Seed a Supabase project from the v1 import: migrations, images, products,
-// variants and the three admin accounts, then verify RLS with the anon key.
+// variants and the three admin accounts, then check that public sign-ups are
+// off and verify RLS with the anon key. Imported products start with stock
+// tracking off (v1 had no counts), so every size stays orderable.
 // Idempotent: re-runs update rows and overwrite images, never duplicate.
 //
 //   npm run seed -- --target staging     (always run staging first)
@@ -169,6 +171,29 @@ async function seedAdmins(db: SupabaseClient, url: string, anonKey: string) {
   }
 }
 
+/**
+ * Only the 3 admins may have accounts (guest checkout). Public sign-ups must be
+ * off in Supabase Auth; warn loudly if they are still on. Admin accounts are
+ * created with the service role, which works either way.
+ */
+async function checkSignupsDisabled(url: string, anonKey: string, target: string) {
+  try {
+    const res = await fetch(`${url}/auth/v1/settings`, { headers: { apikey: anonKey } });
+    const s = (await res.json()) as { disable_signup?: boolean };
+    if (s.disable_signup === true) {
+      console.log("  public sign-ups are off ✓");
+      return;
+    }
+    const bar = "!".repeat(72);
+    console.warn(
+      `\n${bar}\n  WARNING: PUBLIC SIGN-UPS ARE ON for ${target}.\n  Anyone can create an account. Only the 3 admins should exist.\n` +
+        `  Fix: Supabase dashboard → Authentication → Sign In / Providers →\n  turn OFF "Allow new users to sign up" (or: supabase config push).\n${bar}\n`,
+    );
+  } catch {
+    console.warn(`  WARNING: could not read ${target} Auth settings; check that public sign-ups are off.`);
+  }
+}
+
 async function main() {
   const target = parseTarget();
   const { url, anonKey, serviceKey } = requireEnv(target);
@@ -197,7 +222,10 @@ async function main() {
   console.log("4. Admin accounts");
   await seedAdmins(db, url, anonKey);
 
-  console.log("5. RLS checks (anon key)");
+  console.log("5. Auth sign-ups");
+  await checkSignupsDisabled(url, anonKey, target);
+
+  console.log("6. RLS checks (anon key)");
   const failures = await runRlsChecks(url, anonKey);
   if (failures > 0) {
     console.error(`✗ ${failures} RLS check(s) failed on ${target}`);

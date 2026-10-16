@@ -18,7 +18,7 @@ const iconLink = "relative inline-flex size-11 items-center justify-center round
 export function Header({ counts }: { counts: CategoryCounts }) {
   const live = useLiveCategoryCounts(counts);
   const nav = [{ label: "Shop all", href: "/shop" }, ...visibleCategories(live), { label: "Size guide", href: "/size-guide" }];
-  const mobileNav = [...nav, { label: "Wishlist", href: "/wishlist" }];
+  const mobileNav = [...nav, { label: "Wishlist", href: "/wishlist" }, { label: "Track order", href: "/track" }];
   const pathname = usePathname();
   const count = useCart((s) => cartOps.count(s.lines));
   const setOpen = useCart((s) => s.setOpen);

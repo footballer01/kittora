@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { create } from "zustand";
+import { effectiveStock } from "./from-db";
 import type { CatalogProduct, CatalogVariant } from "./types";
 
 // Pages are built at deploy time; price and stock are read live in the browser
@@ -13,7 +14,7 @@ type LiveState = { status: "idle" | "loading" | "ready" | "off"; bySlug: Map<str
 
 export const useLive = create<LiveState>(() => ({ status: "idle", bySlug: new Map() }));
 
-type Row = { slug: string; price_paise: number; variants: { size: string; stock: number | null; position: number }[] };
+type Row = { slug: string; price_paise: number; track_stock: boolean; variants: { size: string; stock: number | null; position: number }[] };
 
 export async function loadLive() {
   if (useLive.getState().status !== "idle") return;
@@ -24,12 +25,12 @@ export async function loadLive() {
   useLive.setState({ status: "loading" });
   try {
     const { supabase } = await import("@/lib/supabase/client");
-    const { data, error } = await supabase().from("products").select("slug, price_paise, variants(size, stock, position)").eq("published", true);
+    const { data, error } = await supabase().from("products").select("slug, price_paise, track_stock, variants(size, stock, position)").eq("published", true);
     if (error || !data) throw error;
     const bySlug = new Map(
       (data as Row[]).map((r) => [
         r.slug,
-        { pricePaise: r.price_paise, variants: [...r.variants].sort((a, b) => a.position - b.position).map((v) => ({ size: v.size, stock: v.stock })) },
+        { pricePaise: r.price_paise, variants: [...r.variants].sort((a, b) => a.position - b.position).map((v) => ({ size: v.size, stock: effectiveStock(r.track_stock, v.stock) })) },
       ]),
     );
     useLive.setState({ status: "ready", bySlug });
@@ -37,6 +38,13 @@ export async function loadLive() {
     // Network or Supabase down: keep showing build-time values.
     useLive.setState({ status: "off" });
   }
+}
+
+/** Reload after the server reports a price or stock change (e.g. at checkout). */
+export async function refreshLive() {
+  if (useLive.getState().status === "loading") return;
+  useLive.setState({ status: "idle" });
+  await loadLive();
 }
 
 /** Mount once (layout). */
