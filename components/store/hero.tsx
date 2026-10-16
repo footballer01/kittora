@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/ui/icons";
 
 /** v1's hero image and copy, on a real type scale with one primary action. */
-export function Hero({ image }: { image: { src: string; width: number; height: number } }) {
+export function Hero({ image }: { image: { src: string; small?: string; width: number; height: number } }) {
   return (
     <section className="mx-auto grid max-w-7xl items-center gap-10 px-4 pt-8 pb-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:pt-14 lg:pb-20">
       <div>
@@ -26,13 +25,17 @@ export function Hero({ image }: { image: { src: string; width: number; height: n
         </div>
       </div>
       <div className="relative overflow-hidden rounded-[28px] bg-surface">
-        <Image
+        {/* Plain <img> so phones get the 640px file (srcset); next/image is unoptimized here. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={image.src}
+          srcSet={image.small ? `${image.small} 640w, ${image.src} ${image.width}w` : undefined}
+          sizes="(min-width: 1024px) 600px, 100vw"
           alt="A blue football jersey with an embroidered crest, seen from behind in a floodlit stadium"
           width={image.width}
           height={image.height}
-          priority
-          sizes="(min-width: 1024px) 600px, 100vw"
+          fetchPriority="high"
+          decoding="async"
           className="hero-settle aspect-[4/5] w-full object-cover sm:aspect-[5/4] lg:aspect-square"
         />
       </div>

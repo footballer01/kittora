@@ -7,7 +7,13 @@ import { InstagramIcon, WhatsAppIcon } from "@/components/ui/icons";
 /** Contact details from admin Settings, loaded live; empty ones are hidden. */
 export function FooterContact() {
   const { settings: s } = useStoreSettings();
-  if (!s.whatsapp && !s.contactEmail && !s.contactPhone && !s.instagramUrl && !s.contactAddress) return null;
+  const socials = [
+    { label: "Instagram", href: s.instagramUrl },
+    { label: "Facebook", href: s.facebookUrl },
+    { label: "YouTube", href: s.youtubeUrl },
+    { label: "X", href: s.xUrl },
+  ].filter((x): x is { label: string; href: string } => !!x.href);
+  if (!s.whatsapp && !s.contactEmail && !s.contactPhone && !socials.length && !s.contactAddress) return null;
   return (
     <div>
       <h2 className="font-heading text-step-n1 font-semibold text-ink">Contact</h2>
@@ -33,13 +39,13 @@ export function FooterContact() {
             </a>
           </li>
         )}
-        {s.instagramUrl && /^https:\/\//.test(s.instagramUrl) && (
-          <li>
-            <a href={s.instagramUrl} rel="noopener" className="inline-flex items-center gap-2 hover:text-ink">
-              <InstagramIcon width={18} height={18} /> Instagram
+        {socials.map((x) => (
+          <li key={x.label}>
+            <a href={x.href} rel="noopener" className="inline-flex items-center gap-2 hover:text-ink">
+              {x.label === "Instagram" && <InstagramIcon width={18} height={18} />} {x.label}
             </a>
           </li>
-        )}
+        ))}
         {s.contactAddress && <li className="whitespace-pre-line">{s.contactAddress}</li>}
       </ul>
     </div>

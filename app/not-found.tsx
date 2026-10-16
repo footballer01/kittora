@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { StoreChrome } from "@/components/store/chrome";
 import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Page not found", robots: { index: false } };
 
 export default function NotFound() {
   return (
+    <StoreChrome>
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-start justify-center px-4 py-24 sm:px-6 lg:px-8">
       <p aria-hidden className="shirt-number text-[clamp(7rem,30vw,16rem)]">
         404
@@ -18,5 +20,6 @@ export default function NotFound() {
         </ButtonLink>
       </div>
     </main>
+    </StoreChrome>
   );
 }

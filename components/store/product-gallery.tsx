@@ -63,6 +63,7 @@ export function ProductGallery({ images, video, name }: { images: CatalogImage[]
               width={img.width}
               height={img.height}
               priority={i === 0}
+              fetchPriority={i === 0 ? "high" : undefined}
               sizes="(min-width: 1024px) 640px, 86vw"
               className={cn("size-full", isWide(img) ? "object-contain p-[6%]" : "object-cover")}
             />

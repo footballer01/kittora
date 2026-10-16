@@ -9,7 +9,7 @@ export function generateStaticParams() {
   return getImportCatalog().map((p) => ({ slug: p.slug }));
 }
 
-export default async function Page({ params }: PageProps<"/preview/product/[slug]">) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   return <PreviewProduct slug={slug} />;
 }

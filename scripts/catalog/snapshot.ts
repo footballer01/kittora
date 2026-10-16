@@ -30,7 +30,11 @@ function writeRedirects() {
   );
   console.log(`  ${lines.length} v1 redirects`);
   // The share image is exported without an extension; tell Cloudflare it's a PNG.
-  writeFileSync(join(root, "public/_headers"), "/opengraph-image\n  Content-Type: image/png\n");
+  writeFileSync(
+    join(root, "public/_headers"),
+    // Admin pages must never be indexed (they're also noindex in their metadata).
+    "/opengraph-image\n  Content-Type: image/png\n/admin\n  X-Robots-Tag: noindex, nofollow\n/admin/*\n  X-Robots-Tag: noindex, nofollow\n",
+  );
 }
 
 async function download(base: string, objects: [string, string][]) {
