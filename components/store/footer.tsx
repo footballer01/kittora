@@ -10,7 +10,8 @@ export function Footer({ counts }: { counts: CategoryCounts }) {
     { label: "Size guide", href: "/size-guide" },
     { label: "Shipping", href: "/shipping" },
     { label: "Returns & exchanges", href: "/returns" },
-    { label: "Contact", href: "/contact" },
+    { label: "Terms", href: "/terms" },
+    { label: "Privacy", href: "/privacy" },
   ];
   return (
     <footer className="mt-auto border-t border-line">

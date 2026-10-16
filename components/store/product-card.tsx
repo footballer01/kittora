@@ -32,6 +32,7 @@ export function ProductCard({
             width={image.width}
             height={image.height}
             priority={priority}
+            fetchPriority={priority ? "high" : undefined}
             sizes="(min-width: 1024px) 300px, 46vw"
             className={cn("absolute inset-0 size-full", isWide(image) ? "object-contain p-[7%]" : "object-cover")}
           />

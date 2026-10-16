@@ -31,7 +31,7 @@ const everyone = [anonRole, authenticatedRole];
 
 // Only admins sign in. "customer" stays in the enum (Postgres can't drop enum
 // values cheaply) as the inert default for any non-admin auth user.
-export const emailKindEnum = pgEnum("email_kind", ["order_placed", "payment_confirmed", "shipped"]);
+export const emailKindEnum = pgEnum("email_kind", ["order_placed", "payment_confirmed", "shipped", "packed", "delivered", "cancelled"]);
 export const emailStatusEnum = pgEnum("email_status", ["pending", "sent", "skipped", "failed"]);
 export const roleEnum = pgEnum("user_role", ["customer", "admin"]);
 export const audienceEnum = pgEnum("audience", ["men", "women", "kids"]);
@@ -249,7 +249,9 @@ export const orders = pgTable(
     uploadKey: uuid("upload_key").notNull().defaultRandom().unique(),
     // md5 of the client IP, only to cap unpaid orders per IP.
     ipHash: text("ip_hash"),
-    // Unpaid orders auto-cancel after this (null = no timeout set in Settings).
+    // Shown to the customer once shipped (courier + tracking number). Admin-set.
+    trackingNote: text("tracking_note"),
+    // Unpaid orders auto-cancel after this (null = never: no timeout and no stock held).
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     ...timestamps,
   },
@@ -259,7 +261,8 @@ export const orders = pgTable(
     index("orders_phone_status_idx").on(t.phone, t.status),
     index("orders_status_expires_idx").on(t.status, t.expiresAt),
     pgPolicy("orders: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
-    pgPolicy("orders: admin update", { for: "update", to: authenticatedRole, using: isAdmin, withCheck: isAdmin }),
+    // Admins change orders only through admin_set_order_status() (0010), which
+    // enforces the status flow; the table itself is not writable from the browser.
   ],
 ).enableRLS();
 
@@ -324,6 +327,14 @@ export const settings = pgTable(
     contactPhone: text("contact_phone"),
     contactAddress: text("contact_address"),
     instagramUrl: text("instagram_url"),
+    facebookUrl: text("facebook_url"),
+    youtubeUrl: text("youtube_url"),
+    xUrl: text("x_url"),
+    // Policy page text (plain text, blank lines = paragraphs). Empty = page hidden.
+    shippingPolicy: text("shipping_policy"),
+    returnsPolicy: text("returns_policy"),
+    termsText: text("terms_text"),
+    privacyText: text("privacy_text"),
     ...timestamps,
   },
   (t) => [
@@ -347,6 +358,8 @@ export const deliveryZones = pgTable(
     pincodePrefix: text("pincode_prefix").notNull().unique(),
     minDays: integer("min_days").notNull(),
     maxDays: integer("max_days").notNull(),
+    // Recorded for a future courier integration; checkout stays UPI-only.
+    codAvailable: boolean("cod_available").notNull().default(false),
     ...timestamps,
   },
   (t) => [
@@ -394,4 +407,24 @@ export const rateLimits = pgTable(
     hits: integer("hits").notNull().default(0),
   },
   (t) => [primaryKey({ columns: [t.key, t.windowStart] })],
+).enableRLS();
+
+// Every admin write (by trigger, so it can't be skipped from the browser) and
+// every admin sign-in attempt (by the admin-login Edge Function). Admins can
+// read it; nobody can change or delete it.
+export const adminAuditLog = pgTable(
+  "admin_audit_log",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    actorId: uuid("actor_id").references(() => authUsers.id, { onDelete: "set null" }),
+    action: text("action").notNull(),
+    entity: text("entity"),
+    entityId: text("entity_id"),
+    details: jsonb("details"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("admin_audit_log_created_idx").on(t.createdAt),
+    pgPolicy("admin_audit_log: admin read", { for: "select", to: authenticatedRole, using: isAdmin }),
+  ],
 ).enableRLS();

@@ -1,4 +1,5 @@
-// Drains email_queue: order placed, payment confirmed, shipped.
+// Drains email_queue: order placed, payment confirmed, packed, shipped,
+// delivered and cancelled.
 //
 // Sends through Gmail SMTP on port 465 (Supabase blocks 25 and 587) when the
 // GMAIL_USER and GMAIL_APP_PASSWORD secrets exist; otherwise marks each email
@@ -18,9 +19,11 @@ type Payload = {
   name: string;
   total_paise: number;
   shipping_paise: number;
+  tracking_note?: string | null;
   items: { name: string; size: string; qty: number; unit_price_paise: number }[];
 };
-type Row = { id: string; kind: "order_placed" | "payment_confirmed" | "shipped"; to_email: string; payload: Payload; attempts: number };
+type Kind = "order_placed" | "payment_confirmed" | "packed" | "shipped" | "delivered" | "cancelled";
+type Row = { id: string; kind: Kind; to_email: string; payload: Payload; attempts: number };
 
 const rupees = (paise: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: paise % 100 ? 2 : 0 }).format(paise / 100);
@@ -32,12 +35,18 @@ function compose(row: Row, site: string) {
   const lead = {
     order_placed: `Thanks for your order, ${p.name}. Pay ${rupees(p.total_paise)} by UPI to confirm it: ${site}/order/${p.number}/pay`,
     payment_confirmed: `We've confirmed your payment of ${rupees(p.total_paise)}. We're getting your order ready.`,
-    shipped: `Your order is on its way.`,
+    packed: `Your order is packed and will be handed to the courier soon.`,
+    shipped: `Your order is on its way.${p.tracking_note ? ` Tracking: ${p.tracking_note}` : ""}`,
+    delivered: `Your order has been delivered. Enjoy the shirt!`,
+    cancelled: `Your order ${p.number} has been cancelled. If you already paid, reply to this email or message us on WhatsApp.`,
   }[row.kind];
   const subject = {
     order_placed: `Order ${p.number} received`,
     payment_confirmed: `Payment confirmed for order ${p.number}`,
+    packed: `Order ${p.number} is packed`,
     shipped: `Order ${p.number} has shipped`,
+    delivered: `Order ${p.number} delivered`,
+    cancelled: `Order ${p.number} cancelled`,
   }[row.kind];
   const lines = p.items.map((i) => `${i.qty} × ${i.name} (size ${i.size}) — ${rupees(i.unit_price_paise * i.qty)}`);
   const text = [lead, "", ...lines, p.shipping_paise ? `Shipping — ${rupees(p.shipping_paise)}` : "", `Total — ${rupees(p.total_paise)}`, "", `Track your order: ${track}`]

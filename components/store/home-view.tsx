@@ -30,7 +30,7 @@ export function HomeView({
   const tileImages = catalog.filter((p) => p.backImage ?? p.image).map((p) => (p.backImage ?? p.image)!);
   return (
     <main>
-      <Hero image={{ src: "/fixtures/hero.webp", width: 1024, height: 1024 }} />
+      <Hero image={{ src: "/fixtures/hero.webp", small: "/fixtures/hero-640.webp", width: 1024, height: 1024 }} />
       {show.kind === "rail" ? <PegRail products={show.products} href={href} sample={sample} /> : <FeaturedGrid products={show.products} href={href} />}
       {edits.map((e) => (
         <EditRail key={e.slug} edit={e} products={e.productIds.map((id) => byId.get(id)).filter((p): p is CatalogProduct => !!p)} href={href} sample={sample} />

@@ -216,19 +216,19 @@ describe("auto-cancel and status changes", () => {
     expect(t.events.map((e) => e.status)).toEqual(["awaiting_payment", "cancelled"]);
   });
 
-  it("queues order placed, payment confirmed and shipped emails (only with an email)", async () => {
+  it("queues an email for each customer-facing status (only with an email)", async () => {
     const o = await place([{ slug: "untracked", size: "M", qty: 1 }], { phone: "9999900001" });
     const noEmail = await place([{ slug: "untracked", size: "M", qty: 1 }], { phone: "9999900002", email: "" });
     await as(db, "authenticated", adminId, async () => {
       for (const s of ["paid", "packed", "shipped"]) {
-        await db.query(`UPDATE public.orders SET status = $1 WHERE number = ANY($2)`, [s, [o.number, noEmail.number]]);
+        await db.query(`SELECT public.admin_set_order_status(id, $1) FROM public.orders WHERE number = ANY($2)`, [s, [o.number, noEmail.number]]);
       }
     });
     const q = await db.query<{ kind: string; to_email: string; number: string }>(
       `SELECT q.kind, q.to_email, q.payload->>'number' AS number FROM public.email_queue q JOIN public.orders o ON o.id = q.order_id WHERE o.number = ANY($1) ORDER BY q.created_at, q.kind`,
       [[o.number, noEmail.number]],
     );
-    expect(q.rows.map((r) => r.kind).sort()).toEqual(["order_placed", "payment_confirmed", "shipped"]);
+    expect(q.rows.map((r) => r.kind).sort()).toEqual(["order_placed", "packed", "payment_confirmed", "shipped"]);
     expect(new Set(q.rows.map((r) => r.number))).toEqual(new Set([o.number]));
   });
 

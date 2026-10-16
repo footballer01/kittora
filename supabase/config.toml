@@ -11,6 +11,15 @@ enable_signup = false
 [auth.email]
 enable_signup = false
 
+# Optional two-factor for admins (authenticator app codes). is_admin() requires
+# a verified code once an admin has turned it on.
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
 # Called from the browser with the public key. It verifies Turnstile itself and
 # is the only caller of place_order() (service role).
 [functions.place-order]
@@ -18,4 +27,12 @@ verify_jwt = false
 
 # Checks for the service-role key itself (database webhook / scheduled call).
 [functions.send-email]
+verify_jwt = false
+
+# Admin sign-in: rate-limited, maps usernames to random sign-in emails.
+[functions.admin-login]
+verify_jwt = false
+
+# Admin "Publish changes": checks is_admin() with the caller's own token.
+[functions.publish]
 verify_jwt = false

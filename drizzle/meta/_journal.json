@@ -64,6 +64,20 @@
       "when": 1792151472691,
       "tag": "0008_checkout_functions",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792156725949,
+      "tag": "0009_admin",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792156726567,
+      "tag": "0010_admin_functions",
+      "breakpoints": true
     }
   ]
 }

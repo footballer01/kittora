@@ -108,6 +108,15 @@ export async function runRlsChecks(url: string, anonKey: string): Promise<number
       },
     },
     {
+      name: "anon cannot read the admin audit log or call admin functions",
+      run: async () => {
+        const log = await anon.from("admin_audit_log").select("id").limit(1);
+        const dash = await anon.rpc("admin_dashboard");
+        const login = await anon.rpc("admin_login_begin", { p_username: "probe", p_ip: "" });
+        return (Boolean(log.error) || (log.data?.length ?? 0) === 0) && Boolean(dash.error) && Boolean(login.error);
+      },
+    },
+    {
       name: "anon is not admin",
       run: async () => {
         const { data, error } = await anon.rpc("is_admin");

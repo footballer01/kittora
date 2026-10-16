@@ -3,7 +3,7 @@
 Football jerseys for fans in India, curated like museum pieces. This is the owned
 codebase for the store currently published as **Terrace Archive**.
 
-**Status:** Phase 3 — store pages, cart, guest checkout with UPI payment, order tracking and order email are built and tested (against an in-memory Postgres and a mocked Supabase). The Supabase projects are not created yet; until they are, the site builds from the v1 import and ordering is switched off. Admin arrives in Phase 5. See the [launch checklist](#launch-checklist).
+**Status:** Phase 4 — store pages, cart, guest checkout with UPI payment, order tracking, order email and the admin panel (`/admin`) are built and tested against an in-memory Postgres and a mocked Supabase. The Supabase projects are not created yet; until they are, the site builds from the v1 import and ordering is switched off. **To go live, follow [LAUNCH.md](LAUNCH.md).**
 
 ## How it works
 
@@ -29,7 +29,7 @@ GitHub (public repo) ──push / "Publish changes"──▶ GitHub Actions: nex
 - **No customer accounts.** Checkout is guest-only, orders are tracked with the order
   number + phone, and the wishlist lives in the browser. Only the 3 admins sign in.
 - **Edge Functions** check Cloudflare Turnstile before an order is placed, send order
-  email, and (Phase 5) re-deploy the site when an admin presses **Publish changes**.
+  email, sign admins in, and re-deploy the site when an admin presses **Publish changes**.
 
 ### Ordering, step by step
 
@@ -50,14 +50,28 @@ GitHub (public repo) ──push / "Publish changes"──▶ GitHub Actions: nex
    `/track` shows that timeline for an order number + phone (rate-limited).
 6. Unpaid orders are cancelled after the timeout in Settings and their stock is released
    (pg_cron every 10 minutes; the daily keepalive workflow is the backup). A timeout of
-   0 means never.
-7. Emails go out on order placed, payment confirmed and shipped, when an email was given.
+   0 means never, except that an order holding tracked stock always expires after 48 hours.
+7. An admin verifies the UTR and moves the order on: paid → packed → shipped (with a
+   tracking note) → delivered, or cancelled (which returns the stock). Postgres enforces
+   this order; a cancelled or delivered order can't change again.
+8. Emails go out on order placed and on every later status, when an email was given.
 
 **Stock tracking** is a per-product switch. Off (the default, and how the 13 imported
 products start): every size can always be ordered and no stock numbers or low-stock
 messages show. On: each size's stock is enforced and reserved; a size at 0 shows as sold
-out. `admin_set_stock()` sets every size of a product at once (the admin screen for it
-arrives in Phase 5).
+out. Admins switch it per product and can set every size at once.
+
+## Admin panel
+
+`/admin` is built for phones (payments are verified on the go). Admins sign in with a
+username and password through the `admin-login` Edge Function (5 attempts per 15 minutes
+per IP + username, one generic error), and can turn on two-factor codes under
+**Account**. Pages: dashboard, orders (Payment submitted first, UTR and screenshot,
+status buttons, packing slip), products (every field, photos with automatic compression
+and drag-to-reorder, video, stock, a **Needs details** filter), edits, delivery zones
+(with CSV import), settings (payment, shipping, contact, social links, policy pages) and
+**Publish changes**. Every admin write is recorded in `admin_audit_log` by a database
+trigger. Admin pages are `noindex` and left out of the sitemap.
 
 ## Stack
 
@@ -182,7 +196,7 @@ with no commits. If that happens, re-enable the workflow in the Actions tab.
 
 ## Edge Functions
 
-Two functions live in `supabase/functions/`, with their settings in `supabase/config.toml`.
+Four functions live in `supabase/functions/`, with their settings in `supabase/config.toml`.
 Deploy them with the [Supabase CLI](https://supabase.com/docs/guides/cli) (free):
 
 ```bash
@@ -191,12 +205,16 @@ supabase link --project-ref <ref>        # once per project
 supabase config push                     # applies supabase/config.toml (sign-ups off)
 supabase functions deploy place-order
 supabase functions deploy send-email
+supabase functions deploy admin-login
+supabase functions deploy publish
 ```
 
 | Function | Called by | Secrets |
 | --- | --- | --- |
 | `place-order` | The checkout page | `TURNSTILE_SECRET_KEY` |
 | `send-email` | A database webhook on `email_queue` | `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `SITE_URL` |
+| `admin-login` | The admin sign-in page | none |
+| `publish` | Admin **Publish changes** | `GITHUB_DEPLOY_TOKEN`, `GITHUB_REPO` |
 
 ### Cloudflare Turnstile (bot check at checkout)
 
@@ -214,7 +232,7 @@ Without the secret, the function logs a warning and skips the check, so set it b
 ## Order email (Gmail)
 
 `place_order()` and status changes add rows to `email_queue` (order placed, payment
-confirmed, shipped), only for orders with an email. The `send-email` Edge Function sends
+confirmed, packed, shipped, delivered, cancelled), only for orders with an email. The `send-email` Edge Function sends
 them, retrying failures with backoff up to 5 times, so hitting Gmail's daily limit never
 fails an order. Until the Gmail secrets exist, each email is marked *skipped* and logged,
 and the site works normally.
@@ -235,7 +253,8 @@ Supabase blocks outgoing ports 25 and 587 from Edge Functions, so the function u
 
 ## Launch checklist
 
-Do each item on **both** Supabase projects (staging and live) unless noted.
+[LAUNCH.md](LAUNCH.md) walks through all of this step by step. Do each item on **both**
+Supabase projects (staging and live) unless noted.
 
 - [ ] **Turn off public sign-ups in Supabase Auth (both projects).** Authentication →
       Sign In / Providers → turn off **Allow new users to sign up**, or run
@@ -243,11 +262,12 @@ Do each item on **both** Supabase projects (staging and live) unless noted.
       `supabase/config.toml`. Only the 3 admins may ever have accounts (the seed creates
       them with the service role, which still works). `npm run seed` warns loudly while
       sign-ups are on.
-- [ ] Deploy the `place-order` and `send-email` Edge Functions (above).
+- [ ] Deploy the four Edge Functions (above).
 - [ ] Turnstile: site key in the repo variable, secret key in Supabase secrets.
 - [ ] Gmail secrets and the `email_queue` webhook.
-- [ ] In Settings (admin, Phase 5; until then the Supabase table editor, `settings` row):
-      UPI ID, payee name, unpaid-order timeout, shipping fee and free-shipping threshold.
+- [ ] In admin **Settings**: UPI ID, payee name, WhatsApp, unpaid-order timeout, shipping
+      fee and threshold, contact details and the four policy texts. Add delivery zones.
+- [ ] Each admin turns on two-factor sign-in (admin → Account).
 - [ ] Place a real ₹1 test order on live and pay it by scanning the QR with two
       different UPI apps.
 - [ ] Check that pg_cron is enabled (Database → Extensions) and that the job

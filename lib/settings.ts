@@ -18,7 +18,12 @@ export type StoreSettings = {
   contactPhone: string | null;
   contactAddress: string | null;
   instagramUrl: string | null;
+  facebookUrl: string | null;
+  youtubeUrl: string | null;
+  xUrl: string | null;
+  policies: Record<PolicyKey, string | null>;
 };
+export type PolicyKey = "shipping" | "returns" | "terms" | "privacy";
 export type DeliveryZone = { name: string; prefix: string; minDays: number; maxDays: number };
 
 export const EMPTY_SETTINGS: StoreSettings = {
@@ -33,6 +38,10 @@ export const EMPTY_SETTINGS: StoreSettings = {
   contactPhone: null,
   contactAddress: null,
   instagramUrl: null,
+  facebookUrl: null,
+  youtubeUrl: null,
+  xUrl: null,
+  policies: { shipping: null, returns: null, terms: null, privacy: null },
 };
 
 type Row = {
@@ -47,9 +56,18 @@ type Row = {
   contact_phone: string | null;
   contact_address: string | null;
   instagram_url: string | null;
+  facebook_url?: string | null;
+  youtube_url?: string | null;
+  x_url?: string | null;
+  shipping_policy?: string | null;
+  returns_policy?: string | null;
+  terms_text?: string | null;
+  privacy_text?: string | null;
 };
 
 const text = (s: string | null | undefined) => s?.trim() || null;
+// Social links must be https (admins paste them; never render other schemes).
+const link = (s: string | null | undefined) => (text(s) && /^https:\/\/[^\s]+$/.test(s!.trim()) ? s!.trim() : null);
 
 export function settingsFromRow(r: Row, supabaseUrl: string): StoreSettings {
   const qr = text(r.qr_image_path);
@@ -64,7 +82,11 @@ export function settingsFromRow(r: Row, supabaseUrl: string): StoreSettings {
     contactEmail: text(r.contact_email),
     contactPhone: text(r.contact_phone),
     contactAddress: text(r.contact_address),
-    instagramUrl: text(r.instagram_url),
+    instagramUrl: link(r.instagram_url),
+    facebookUrl: link(r.facebook_url),
+    youtubeUrl: link(r.youtube_url),
+    xUrl: link(r.x_url),
+    policies: { shipping: text(r.shipping_policy), returns: text(r.returns_policy), terms: text(r.terms_text), privacy: text(r.privacy_text) },
   };
 }
 
