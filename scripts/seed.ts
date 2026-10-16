@@ -14,7 +14,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
-import { adminEmail } from "@/lib/admin";
+import { ADMIN_EMAIL_DOMAIN, isValidAdminUsername, newAdminEmail } from "@/lib/admin";
 import { runRlsChecks } from "./rls-check";
 
 config({ path: ".env.local", quiet: true });
@@ -137,37 +137,42 @@ async function seedCatalogue(db: SupabaseClient, products: ImportedProduct[], ma
   return { products: saved.length, images: images.length, variants: variants.length };
 }
 
-async function findUserByEmail(db: SupabaseClient, email: string) {
-  for (let page = 1; page < 50; page++) {
-    const { users } = must(await db.auth.admin.listUsers({ page, perPage: 200 }), "list users");
-    const hit = users.find((u) => u.email?.toLowerCase() === email);
-    if (hit) return hit;
-    if (users.length < 200) return null;
-  }
-  return null;
+/** The admin's auth user, found by username (emails are random, see lib/admin.ts). */
+async function findAdmin(db: SupabaseClient, username: string) {
+  const { data, error } = await db.from("profiles").select("id").ilike("username", username.replace(/[%_\\]/g, "\\$&")).maybeSingle();
+  if (error) throw new Error(`find admin: ${error.message}`);
+  if (!data) return null;
+  const { data: u, error: e } = await db.auth.admin.getUserById(data.id);
+  if (e) throw new Error(`find admin: ${e.message}`);
+  return u.user;
 }
 
 async function seedAdmins(db: SupabaseClient, url: string, anonKey: string) {
   for (const n of [1, 2, 3]) {
     const username = process.env[`ADMIN_${n}_USERNAME`]!.trim();
     const password = process.env[`ADMIN_${n}_PASSWORD`]!;
-    const email = adminEmail(username);
-    const existing = await findUserByEmail(db, email);
+    if (!isValidAdminUsername(username)) throw new Error(`ADMIN_${n}_USERNAME: use 2–31 letters, digits, dots, dashes or underscores`);
+    const existing = await findAdmin(db, username);
+    // Older accounts used "<username>@domain"; move them to a random address.
+    const legacy = existing?.email === `${username.toLowerCase()}@${ADMIN_EMAIL_DOMAIN}`;
+    const email = existing && !legacy ? existing.email! : newAdminEmail();
     const user = existing
-      ? must(await db.auth.admin.updateUserById(existing.id, { password, email_confirm: true }), `update admin ${n}`).user
+      ? must(await db.auth.admin.updateUserById(existing.id, { email, password, email_confirm: true }), `update admin ${n}`).user
       : must(await db.auth.admin.createUser({ email, password, email_confirm: true }), `create admin ${n}`).user;
     const profile = await db.from("profiles").upsert({ id: user.id, role: "admin", username }, { onConflict: "id" });
     if (profile.error) throw new Error(`set admin ${n} profile: ${profile.error.message}`);
 
-    // Confirm the account can actually sign in (as a browser would).
+    // Confirm the account can actually sign in (as the admin-login function would).
     const client = createClient(url, anonKey, { auth: { persistSession: false } });
     const { error } = await client.auth.signInWithPassword({ email, password });
     if (error) throw new Error(`Admin ${n}: sign-in check failed (${error.message})`);
     const { data: isAdmin } = await client.rpc("is_admin");
     await client.auth.signOut();
-    if (isAdmin !== true) throw new Error(`Admin ${n}: signed in but is_admin() is not true`);
+    // A TOTP admin's password session is aal1, so is_admin() is false until the code.
+    const mfa = (await db.auth.admin.mfa.listFactors({ userId: user.id })).data?.factors.some((f) => f.status === "verified");
+    if (isAdmin !== true && !mfa) throw new Error(`Admin ${n}: signed in but is_admin() is not true`);
     // Never print usernames, emails or passwords: CI logs are public.
-    console.log(`  admin ${n}/3: ${existing ? "updated" : "created"}, sign-in OK, is_admin() = true`);
+    console.log(`  admin ${n}/3: ${existing ? "updated" : "created"}, sign-in OK${mfa ? ", two-factor on" : ", is_admin() = true"}`);
   }
 }
 

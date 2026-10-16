@@ -1,19 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { adminEmail, isValidAdminUsername } from "@/lib/admin";
+import { isValidAdminUsername, newAdminEmail } from "@/lib/admin";
 
-describe("adminEmail", () => {
-  it("lowercases and trims the username", () => {
-    expect(adminEmail("  Some-User ")).toBe("some-user@admin.kittora.internal");
+describe("admin usernames", () => {
+  it("rejects usernames that could break lookups", () => {
+    for (const bad of ["", "a", "a b", "x@y", "-lead", "a".repeat(40)]) expect(isValidAdminUsername(bad)).toBe(false);
+    expect(isValidAdminUsername("Some-User")).toBe(true);
   });
+});
 
-  it("is the same for any casing", () => {
-    expect(adminEmail("ABC")).toBe(adminEmail("abc"));
-  });
-
-  it("rejects usernames that could break the address", () => {
-    for (const bad of ["", "a", "a b", "x@y", "-lead", "a".repeat(40)]) {
-      expect(isValidAdminUsername(bad)).toBe(false);
-      expect(() => adminEmail(bad)).toThrow();
-    }
+// Safety review: the sign-in email used to be "<username>@admin.kittora.internal",
+// so anyone who guessed a username could brute-force the public Auth endpoint
+// directly and skip the admin-login rate limit.
+describe("newAdminEmail", () => {
+  it("can't be derived from the username and never repeats", () => {
+    const a = newAdminEmail();
+    const b = newAdminEmail();
+    expect(a).not.toBe(b);
+    expect(a).toMatch(/^a-[0-9a-f]{32}@admin\.kittora\.internal$/);
   });
 });

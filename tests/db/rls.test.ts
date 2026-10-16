@@ -115,10 +115,11 @@ describe("signed-in non-admin", () => {
         `INSERT INTO public.edits (slug, title) VALUES ('y', 'y')`,
         `INSERT INTO storage.objects (bucket_id, name) VALUES ('site-assets', 'qr.png')`,
         `INSERT INTO storage.objects (bucket_id, name) VALUES ('product-images', 'x.webp')`,
+        `UPDATE public.orders SET status = 'paid'`,
+        `INSERT INTO public.admin_audit_log (action) VALUES ('x')`,
       ];
       for (const sql of writes) await expect(db.query(sql), sql).rejects.toThrow(/permission denied|row-level security/);
       const updates = [
-        `UPDATE public.orders SET status = 'paid'`,
         `UPDATE public.settings SET upi_id = 'evil@upi'`,
         `UPDATE public.variants SET stock = 99`,
         `DELETE FROM public.products`,
@@ -126,6 +127,10 @@ describe("signed-in non-admin", () => {
       ];
       for (const sql of updates) expect((await db.query(sql)).affectedRows, sql).toBe(0);
       await expect(db.query(`SELECT public.admin_set_stock($1, 9)`, [publishedId])).rejects.toThrow(/forbidden/);
+      await expect(db.query(`SELECT public.admin_dashboard()`)).rejects.toThrow(/forbidden/);
+      await expect(db.query(`SELECT public.admin_set_order_status(gen_random_uuid(), 'paid')`)).rejects.toThrow(/forbidden/);
+      await expect(db.query(`SELECT public.admin_login_begin('x', '1.2.3.4')`)).rejects.toThrow(/permission denied/);
+      expect(await rows(`SELECT * FROM public.admin_audit_log`)).toHaveLength(0);
       await expect(db.query(`SELECT public.place_order('{}', '[]', '')`)).rejects.toThrow(/permission denied/);
       await expect(db.query(`SELECT public.cancel_expired_orders()`)).rejects.toThrow(/permission denied/);
     });

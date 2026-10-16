@@ -17,13 +17,18 @@ CREATE TABLE auth.users (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), email te
 CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS
   $$ SELECT nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
 GRANT EXECUTE ON FUNCTION auth.uid() TO anon, authenticated;
+CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
+  $$ SELECT coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;
+GRANT EXECUTE ON FUNCTION auth.jwt() TO anon, authenticated;
+CREATE TABLE auth.mfa_factors (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL, status text NOT NULL);
 
 CREATE TABLE storage.buckets (
   id text PRIMARY KEY, name text NOT NULL, public boolean DEFAULT false,
   file_size_limit bigint, allowed_mime_types text[]
 );
 CREATE TABLE storage.objects (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(), bucket_id text REFERENCES storage.buckets(id), name text, owner uuid
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(), bucket_id text REFERENCES storage.buckets(id), name text, owner uuid,
+  metadata jsonb
 );
 ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT, UPDATE, DELETE ON storage.objects TO anon, authenticated;
@@ -43,16 +48,21 @@ export async function freshDatabase(): Promise<PGlite> {
   return db;
 }
 
-/** Run `fn` as a Supabase role, optionally as a specific signed-in user. */
+/**
+ * Run `fn` as a Supabase role, optionally as a specific signed-in user.
+ * `aal` is the session's assurance level ("aal2" after a TOTP code).
+ */
 export async function as<T>(
   db: PGlite,
   role: "anon" | "authenticated" | "service_role",
   userId: string | null,
   fn: () => Promise<T>,
   ip = "203.0.113.1",
+  aal: "aal1" | "aal2" = "aal1",
 ): Promise<T> {
   await db.exec(`SET ROLE ${role}`);
   await db.query(`SELECT set_config('request.jwt.claim.sub', $1, false)`, [userId ?? ""]);
+  await db.query(`SELECT set_config('request.jwt.claims', $1, false)`, [JSON.stringify(userId ? { sub: userId, aal } : { role })]);
   // PostgREST exposes request headers this way; client_ip() reads them.
   await db.query(`SELECT set_config('request.headers', $1, false)`, [JSON.stringify({ "cf-connecting-ip": ip })]);
   try {
@@ -60,6 +70,7 @@ export async function as<T>(
   } finally {
     await db.exec("RESET ROLE");
     await db.query(`SELECT set_config('request.jwt.claim.sub', '', false)`);
+    await db.query(`SELECT set_config('request.jwt.claims', '', false)`);
     await db.query(`SELECT set_config('request.headers', '', false)`);
   }
 }
