@@ -46,8 +46,12 @@ customer data or private planning notes into tracked files. Private context live
     with optional TOTP.
   - Payment screenshots go in a private bucket: images only, ≤ 5 MB, and only for
     orders awaiting payment.
-- **Edge Functions** (Deno, in `supabase/functions/`) handle Gmail SMTP on port 465
-  through `email_queue`, admin login, Turnstile checks, and the admin publish trigger.
+- **Edge Functions** (Deno, in `supabase/functions/`, settings in `supabase/config.toml`):
+  `place-order` (Turnstile check, then `place_order()` with the service role) and
+  `send-email` (Gmail SMTP on port 465, drains `email_queue`). Phase 5 adds admin login
+  and the publish trigger. They are excluded from tsc and ESLint.
+- **Public sign-ups stay off** (`enable_signup = false` in `supabase/config.toml`). Only
+  the 3 admins have accounts.
 
 ## Commands
 
@@ -85,6 +89,22 @@ customer data or private planning notes into tracked files. Private context live
   HTML shows build-time values until then.
 - **Shop filters** (`lib/catalog/filters.ts`) are URL-synced; a facet shows only when it
   has 2+ values, so empty admin fields never produce filters.
+- **Checkout** (`lib/checkout/`): `rules.ts` mirrors the SQL (phone, shipping, zones,
+  line issues), `api.ts` wraps the Edge Function and RPCs and maps error codes to copy,
+  `form.ts` is the Zod schema. SQL lives in `drizzle/0008_checkout_functions.sql`
+  (`place_order`, `track_order`, `submit_payment`, status trigger, auto-cancel,
+  `claim_emails`, `admin_set_stock`, storage policies). `tests/db/checkout.test.ts`
+  covers it on PGlite.
+- **Stock mode:** `products.track_stock` (default off). Off → stock is ignored (`null` in
+  the catalogue). On → enforced, unset counts as 0 (`effectiveStock()` in `from-db.ts`).
+- **Pay page:** `/order/_/pay` is one static file; `public/_redirects` rewrites
+  `/order/<number>/pay` to it and the page reads the number from the URL. Link to it with
+  a plain `<a>` or `window.location`, not the Next router.
+- **Settings** (`lib/settings.ts`) load live; empty fields hide their UI. The WhatsApp
+  number row default is the store's published number.
+- **E2E** builds with `KITTORA_CATALOG=import` and a fake Supabase URL that
+  `tests/e2e/mock-supabase.ts` answers. `SHOTS=1 npm run test:e2e` saves 390px checkout
+  screenshots, and the flow asserts the 16px gutter.
 - **SEO:** metadata per page, Product + BreadcrumbList JSON-LD (`lib/seo.ts`), sitemap,
   robots, default OG image; product/club pages share the jersey photo.
 
